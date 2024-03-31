@@ -5,11 +5,48 @@ using UnityEngine;
 
 public static class WallGenerator
 {
-    public static void createWalls(HashSet<Vector2Int> floorPosition , TilMapVisulaizer tilMapVisulaizer){
-        var basicWallPosition = FindWallsInDirections(floorPosition , Direction2D.cardinalDirectionList);
+    public static void createWalls(HashSet<Vector2Int> floorPosition , TilMapVisulaizer tilMapVisulaizer)
+    {
+        var basicWallPosition = FindWallsInDirections(floorPosition, Direction2D.cardinalDirectionList);
+        var cornerWallPositions = FindWallsInDirections(floorPosition, Direction2D.diagonalDirectionList);
+        CreateBasicWalls(tilMapVisulaizer, basicWallPosition, floorPosition);
+        CreateCornerWalls(tilMapVisulaizer, cornerWallPositions, floorPosition);
+    }
+
+    private static void CreateCornerWalls(TilMapVisulaizer tilMapVisulaizer, HashSet<Vector2Int> cornerWallPositions, HashSet<Vector2Int> floorPosition)
+    {
+        foreach (var position in cornerWallPositions)
+        {
+            string neighboursBinaryType = "";
+            foreach (var direction in Direction2D.eightDirectionsList)
+            {
+                var neighbourPosition = position + direction;
+                if(floorPosition.Contains(neighbourPosition)){
+                    neighboursBinaryType += "1";
+                }
+                else{
+                    neighboursBinaryType += "0";
+                }
+            }
+            tilMapVisulaizer.PaintSingleCornerWall(position, neighboursBinaryType);
+        }
+    }
+
+    private static void CreateBasicWalls(TilMapVisulaizer tilMapVisulaizer, HashSet<Vector2Int> basicWallPosition, HashSet<Vector2Int> floorPosition)
+    {
         foreach (var position in basicWallPosition)
         {
-            tilMapVisulaizer.paintWallTiles(position);
+            string neighboursBinaryType = "";
+            foreach(var direction in Direction2D.cardinalDirectionList){
+                var neighbourPosition = position + direction;
+                if(floorPosition.Contains(neighbourPosition)){
+                    neighboursBinaryType += "1";
+                }
+                else{
+                    neighboursBinaryType += "0";
+                }
+            }
+            tilMapVisulaizer.paintWallTiles(position, neighboursBinaryType);
         }
     }
 
