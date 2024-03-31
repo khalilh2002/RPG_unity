@@ -7,14 +7,14 @@ public static class WallTypesHelper
     public static HashSet<int> wallTop = new HashSet<int>
     {
         0b1111,
-        0b0110,
-        0b0011,
+        0b0110,//this also has some kind of issues for the top right
+        0b0011,//this does with bottom right it seems
         0b0010,
         0b1010,
         0b1100,
         0b1110,
         0b1011,
-        0b0111
+        //0b0111,//this one has an issue forcing the top instead of the right
     };
 
     public static HashSet<int> wallSideLeft = new HashSet<int>
