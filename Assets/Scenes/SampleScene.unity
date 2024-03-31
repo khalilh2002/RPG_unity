@@ -430,6 +430,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 569aefa14dc1d9944abe6b560e7421ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Boss: {fileID: 0}
   player: {fileID: 792160106}
   obj: {fileID: 996361052}
 --- !u!95 &792160104
@@ -4388,7 +4389,10 @@ MonoBehaviour:
   floorTilmap: {fileID: 2135398350}
   wallTilemap: {fileID: 856754633}
   floorTile: {fileID: 11400000, guid: 471853985ed4b5242ad12af71ace0cf6, type: 2}
-  wallTile: {fileID: 11400000, guid: 22c9f328675568942a63b2770a6a63dc, type: 2}
+  topWallTile: {fileID: 11400000, guid: 22c9f328675568942a63b2770a6a63dc, type: 2}
+  bottomWallTile: {fileID: 11400000, guid: 22c9f328675568942a63b2770a6a63dc, type: 2}
+  leftWallTile: {fileID: 11400000, guid: 22c9f328675568942a63b2770a6a63dc, type: 2}
+  rightWallTile: {fileID: 11400000, guid: 22c9f328675568942a63b2770a6a63dc, type: 2}
 --- !u!4 &900231603
 Transform:
   m_ObjectHideFlags: 0
@@ -4817,6 +4821,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 569aefa14dc1d9944abe6b560e7421ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Boss: {fileID: 0}
   player: {fileID: 792160106}
   obj: {fileID: 996361052}
 --- !u!1 &1989386210
