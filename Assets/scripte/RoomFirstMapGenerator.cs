@@ -10,7 +10,7 @@ using Random = UnityEngine.Random ;
 
 public class RoomFirstMapGenerator : simpleWalkMapGenerator
 {
-    //var to send to the player in wich he will be posioned
+    //var to send to the Main in wich he will be posioned
     public static BoundsInt FirstRoom ;
     public static List<BoundsInt>  listRoomOrigin ;
 
@@ -76,7 +76,8 @@ public class RoomFirstMapGenerator : simpleWalkMapGenerator
     }
 
     //need to triple the corridor
-    private HashSet<Vector2Int> CreateCorridor(Vector2Int currentRoomCenter, Vector2Int destination)
+    
+     private HashSet<Vector2Int> CreateCorridor(Vector2Int currentRoomCenter, Vector2Int destination)
     {
         HashSet<Vector2Int> corridor = new HashSet<Vector2Int>();
         var postion = currentRoomCenter; //start point;
@@ -91,6 +92,11 @@ public class RoomFirstMapGenerator : simpleWalkMapGenerator
             }
             
             corridor.Add(postion);
+            corridor.Add(postion+Vector2Int.left);
+            corridor.Add(postion+Vector2Int.right);
+
+            corridor.Add(postion + Vector2Int.left + Vector2Int.left);
+            corridor.Add(postion + Vector2Int.right + Vector2Int.right);
         }
         while (postion.x != destination.x)
         {
@@ -101,12 +107,56 @@ public class RoomFirstMapGenerator : simpleWalkMapGenerator
                 postion += Vector2Int.right;
             }
             corridor.Add(postion);
+
+            corridor.Add(postion + Vector2Int.up);
+            corridor.Add(postion + Vector2Int.down);
+
+            corridor.Add(postion + Vector2Int.up + Vector2Int.up);
+            corridor.Add(postion + Vector2Int.down + Vector2Int.down);
+
         }
     
         return corridor;
     }
+    /*
+    private HashSet<Vector2Int> CreateCorridor(Vector2Int currentRoomCenter, Vector2Int destination)
+    {
+        HashSet<Vector2Int> corridor = new HashSet<Vector2Int>();
+        var position = currentRoomCenter; // Start point
+        corridor.Add(position);
 
-   
+        // Determine the direction to move in y-axis
+        int yStep = Math.Sign(destination.y - currentRoomCenter.y);
+
+        // Traverse in y-axis
+        while (position.y != destination.y)
+        {
+            position += new Vector2Int(0, yStep);
+            corridor.Add(position);
+
+            // Add adjacent points to make the corridor wider
+            corridor.Add(position + Vector2Int.left);
+            corridor.Add(position + Vector2Int.right);
+        }
+
+        // Determine the direction to move in x-axis
+        int xStep = Math.Sign(destination.x - currentRoomCenter.x);
+
+        // Traverse in x-axis
+        while (position.x != destination.x)
+        {
+            position += new Vector2Int(xStep, 0);
+            corridor.Add(position);
+
+            // Add adjacent points to make the corridor wider
+            corridor.Add(position + Vector2Int.up);
+            corridor.Add(position + Vector2Int.down);
+        }
+
+        return corridor;
+    }
+    */
+
 
 
     private Vector2Int FindClosestTo(Vector2Int currentRoomCenter, List<Vector2Int> roomCenters)
