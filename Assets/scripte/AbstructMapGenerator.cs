@@ -16,3 +16,6 @@ public abstract class AbstructMapGenerator : MonoBehaviour
 
     protected abstract void RunProceduralGeneration();
 }
+
+
+//hello test

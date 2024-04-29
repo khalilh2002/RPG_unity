@@ -99,3 +99,6 @@ public class TilMapVisulaizer : MonoBehaviour
         paintSingleTile(wallTilemap,tile,position);
     }
 }
+
+
+//hello test
