@@ -34,4 +34,6 @@ public class simpleWalkMapGenerator : AbstructMapGenerator
     }
 
 
+//hello test
+
 }
