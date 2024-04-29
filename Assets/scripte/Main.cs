@@ -12,11 +12,16 @@ public class Main : MonoBehaviour
 
     [SerializeField] RoomFirstMapGenerator obj;
 
+    Vector3 test_x = default;
+    double test_v = default;
 
     void Start()
     {
-       // player = GetComponent<Transform>();
+        // player = GetComponent<Transform>();
         //boss = GetComponent<Transform>();
+
+
+       
 
         obj.runRoomFirstMapGeneratorClass();
 
@@ -26,24 +31,27 @@ public class Main : MonoBehaviour
         var FirstRoom = RoomFirstMapGenerator.FirstRoom;
         player.transform.position = new Vector3(FirstRoom.center.x, FirstRoom.center.y, FirstRoom.center.z);
         
-        float max = float.MinValue;
-        BoundsInt bossRoom = RoomFirstMapGenerator.listRoomOrigin[0];
-        foreach (var room in RoomFirstMapGenerator.listRoomOrigin)
-        {
-            var distance = Vector3.Distance(FirstRoom.center, room.center);
-            if (distance > max)
-            {
-                max = distance;
-                bossRoom = room;
-            }
-        }
+        //float max = float.MinValue;
+        //BoundsInt bossRoom = RoomFirstMapGenerator.listRoomOrigin[0];
+        //foreach (var room in RoomFirstMapGenerator.listRoomOrigin)
+        //{
+        //    var distance = Vector3.Distance(FirstRoom.center, room.center);
+        //    if (distance > max)
+        //    {
+        //        max = distance;
+        //        bossRoom = room;
+        //    }
+        //}
 
-        FirstRoom = bossRoom;
-        boss.transform.position = new Vector3(FirstRoom.center.x, FirstRoom.center.y, FirstRoom.center.z);
+        //FirstRoom = bossRoom;
+        //boss.transform.position = new Vector3(FirstRoom.center.x, FirstRoom.center.y, FirstRoom.center.z);
         
-        //Dictionary<BoundsInt, double> djikstra_player = RoomFirstMapGenerator.djikstra_result;
-        //Dictionary<BoundsInt, double> valueBoss = max_distance(djikstra_player);
+        Dictionary<BoundsInt, double> djikstra_player = RoomFirstMapGenerator.djikstra_result;
+        Dictionary<BoundsInt, double> valueBoss = max_distance(djikstra_player, ref test_x, ref test_v);
         //boss.transform.position = valueBoss.Keys.First().center;
+
+
+        boss.transform.position = test_x;
 
     }
 
@@ -58,59 +66,60 @@ public class Main : MonoBehaviour
             player.transform.position = new Vector3(FirstRoom.center.x, FirstRoom.center.y, FirstRoom.center.z);
 
 
-            float max = float.MinValue;
-            BoundsInt bossRoom = RoomFirstMapGenerator.listRoomOrigin[0];
-            foreach (var room in RoomFirstMapGenerator.listRoomOrigin)
-            {
-                var distance = Vector3.Distance(FirstRoom.center, room.center);
-                if (distance > max)
-                {
-                    max = distance;
-                    bossRoom = room;
-                }
-            }
+            //float max = float.MinValue;
+            //BoundsInt bossRoom = RoomFirstMapGenerator.listRoomOrigin[0];
+            //foreach (var room in RoomFirstMapGenerator.listRoomOrigin)
+            //{
+            //    var distance = Vector3.Distance(FirstRoom.center, room.center);
+            //    if (distance > max)
+            //    {
+            //        max = distance;
+            //        bossRoom = room;
+            //    }
+            //}
 
-            FirstRoom = bossRoom;
-            boss.transform.position = new Vector3(FirstRoom.center.x, FirstRoom.center.y, FirstRoom.center.z);
-            
-
+            //FirstRoom = bossRoom;
+            //boss.transform.position = new Vector3(FirstRoom.center.x, FirstRoom.center.y, FirstRoom.center.z);
 
 
 
-            /*
-            obj.runRoomFirstMapGeneratorClass();
 
-            // Get the player's current position
-            var playerPosition = player.position;
 
-            // Get the Dijkstra result from the RoomFirstMapGenerator
+
             Dictionary<BoundsInt, double> djikstra_player = RoomFirstMapGenerator.djikstra_result;
+            Dictionary<BoundsInt, double> valueBoss = max_distance(djikstra_player, ref test_x, ref test_v);
+            //boss.transform.position = valueBoss.Keys.First().center;
 
-            // Find the position with the maximum distance from the player
-            var farthestPosition = GetFarthestPosition(playerPosition, djikstra_player);
-
-            // Set the boss's position to the farthest position
-            boss.position = farthestPosition;
-            */
+            
+            boss.transform.position = test_x;
 
         }
     }
 
 
-    Dictionary<BoundsInt, double> max_distance( Dictionary<BoundsInt, double> distances)
+    Dictionary<BoundsInt, double> max_distance( Dictionary<BoundsInt, double> distances , ref Vector3 x , ref double y)
     {
         double maxValue = double.NegativeInfinity;
         BoundsInt maxBoundsint = default;
+
+        x = maxBoundsint.center;
+        y = maxValue;
+
+
         foreach (var item in distances)
         {
             if (item.Value > maxValue)
             {
                 maxValue = item.Value;
                 maxBoundsint = item.Key;
+
+
+                x = maxBoundsint.center;
+                y = maxValue;
             }
 
         }
-
+        
         Dictionary<BoundsInt, double> maxDict = new Dictionary<BoundsInt, double>();
         maxDict[maxBoundsint] = maxValue;
 

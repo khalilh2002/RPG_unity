@@ -13,6 +13,7 @@ public class RoomFirstMapGenerator : simpleWalkMapGenerator
     //var to send to the Main in wich he will be posioned
     public static BoundsInt FirstRoom ;
     public static List<BoundsInt>  listRoomOrigin ;
+    public static Dictionary<BoundsInt, double> djikstra_result ;
 
     //addede for djikstra
     Graph graph_main = new Graph();
@@ -206,9 +207,15 @@ public class RoomFirstMapGenerator : simpleWalkMapGenerator
 
     public void runRoomFirstMapGeneratorClass(){
         tilmapVisulaizer.clear();
+        graph_main.clear();
         RunProceduralGeneration();
         Debug.Log("runfirstvoid END END");
-        graph_main.Display();
+        djikstra_result = graph_main.Dijkstra(FirstRoom);
+        foreach (var item in djikstra_result)
+        {
+            Debug.Log("item : " + item);
+        }
+
     }
 
 
@@ -255,6 +262,10 @@ public class Graph
         {
             return new List<(BoundsInt, double)>();
         }
+    }
+    public void clear()
+    {
+        vertex.Clear();
     }
 
     public void Display()
