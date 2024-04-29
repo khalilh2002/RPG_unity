@@ -137,4 +137,9 @@ public static class Direction2D{
 
         return cardinalDirectionList[Random.Range(0,cardinalDirectionList.Count)];
     }
+
+    public static void Djikstra()
+    {
+
+    }
 }

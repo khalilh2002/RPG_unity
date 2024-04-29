@@ -14,6 +14,9 @@ public class RoomFirstMapGenerator : simpleWalkMapGenerator
     public static BoundsInt FirstRoom ;
     public static List<BoundsInt>  listRoomOrigin ;
 
+    //addede for djikstra
+    Graph graph_main = new Graph();
+
     
 
     [SerializeField]
@@ -49,21 +52,43 @@ public class RoomFirstMapGenerator : simpleWalkMapGenerator
             roomCenters.Add(center);
         }
 
-        HashSet<Vector2Int> corridors = ConnectRooms(roomCenters);
+        HashSet<Vector2Int> corridors = ConnectRooms(roomCenters , roomlist);
         floor.UnionWith(corridors);
         Debug.Log("hello this is floor content " + floor);
         tilmapVisulaizer.paintFloorTiles(floor);
         WallGenerator.createWalls(floor,tilmapVisulaizer);
     }
 
-    private HashSet<Vector2Int> ConnectRooms(List<Vector2Int> roomCenters)
+ 
+
+    private HashSet<Vector2Int> ConnectRooms(List<Vector2Int> roomCenters , List<BoundsInt> listrooms)
     {
         HashSet<Vector2Int> corridors = new HashSet<Vector2Int>();
-        var currentRoomCenter = roomCenters[Random.Range(0,roomCenters.Count)];
+        var currentRoomCenter = roomCenters[0];
         roomCenters.Remove(currentRoomCenter);
         while (roomCenters.Count > 0)
         {
             Vector2Int closest = FindClosestTo(currentRoomCenter , roomCenters);
+
+            foreach (var room in listRoomOrigin)
+            {
+                if ((Vector2Int)Vector3Int.RoundToInt(room.center) == currentRoomCenter)
+                {
+                    foreach (var otherRoom in listRoomOrigin)
+                    {
+                        if ( !room.Equals(otherRoom) && (Vector2Int)Vector3Int.RoundToInt(otherRoom.center) == closest)
+                        {
+                            double weight = UnityEngine.Vector3.Distance(room.center, otherRoom.center);
+                            graph_main.addEdge(room, otherRoom, weight);
+                            Debug.Log("add edge wright : " + weight);
+                            
+                        }
+                    }
+                }
+            }
+
+
+
             roomCenters.Remove(closest);
             HashSet<Vector2Int> newCorridor = CreateCorridor(currentRoomCenter , closest);
            
@@ -118,44 +143,7 @@ public class RoomFirstMapGenerator : simpleWalkMapGenerator
     
         return corridor;
     }
-    /*
-    private HashSet<Vector2Int> CreateCorridor(Vector2Int currentRoomCenter, Vector2Int destination)
-    {
-        HashSet<Vector2Int> corridor = new HashSet<Vector2Int>();
-        var position = currentRoomCenter; // Start point
-        corridor.Add(position);
-
-        // Determine the direction to move in y-axis
-        int yStep = Math.Sign(destination.y - currentRoomCenter.y);
-
-        // Traverse in y-axis
-        while (position.y != destination.y)
-        {
-            position += new Vector2Int(0, yStep);
-            corridor.Add(position);
-
-            // Add adjacent points to make the corridor wider
-            corridor.Add(position + Vector2Int.left);
-            corridor.Add(position + Vector2Int.right);
-        }
-
-        // Determine the direction to move in x-axis
-        int xStep = Math.Sign(destination.x - currentRoomCenter.x);
-
-        // Traverse in x-axis
-        while (position.x != destination.x)
-        {
-            position += new Vector2Int(xStep, 0);
-            corridor.Add(position);
-
-            // Add adjacent points to make the corridor wider
-            corridor.Add(position + Vector2Int.up);
-            corridor.Add(position + Vector2Int.down);
-        }
-
-        return corridor;
-    }
-    */
+  
 
 
 
@@ -175,14 +163,36 @@ public class RoomFirstMapGenerator : simpleWalkMapGenerator
         return closest ; 
     }
 
+
+
     private HashSet<Vector2Int> createSimpleRooms(List<BoundsInt> roomlist)
     {   HashSet<Vector2Int> floor = new HashSet<Vector2Int>();
         foreach (var room in roomlist)
         {
+            //Vector3Int min = room.min + new Vector3Int(offset, offset, 0);
+            //Vector3Int max = room.max - new Vector3Int(offset, offset, 0);
+            //BoundsInt adjustedBounds = new BoundsInt(min, max - min);
+            //try {
+            //    listRoomOrigin.Add(adjustedBounds);
+
+            //}
+            //catch (NullReferenceException e)
+            //{
+            //    Debug.Log("room adjustBounds :" + adjustedBounds);
+
+            //    Debug.Log("room adjustBounds max :" + min);
+            //    Debug.Log("room adjustBounds min :" + max);
+            //    Debug.LogError(e.Message);
+            //}
+            // Add the adjusted room bounds to the list
+
+
             for (int column = offset; column < room.size.x - offset; column++)
             {
                 for (int row = offset; row < room.size.y - offset; row++){
                     Vector2Int position =  (Vector2Int)room.min + new Vector2Int(column , row );
+                    //BoundsInt adjustedBounds = new BoundsInt(new Vector3Int(position.x,position.y,0) , room.max- new Vector3Int(position.x, position.y, 0) );
+
                     floor.Add(position);
                 }
             }
@@ -192,9 +202,192 @@ public class RoomFirstMapGenerator : simpleWalkMapGenerator
     }
 
     //funtion to call the run Procedural Map and clear the previeous one 
+
+
     public void runRoomFirstMapGeneratorClass(){
         tilmapVisulaizer.clear();
         RunProceduralGeneration();
         Debug.Log("runfirstvoid END END");
+        graph_main.Display();
+    }
+
+
+
+
+}
+
+
+
+public class Graph
+{
+    Dictionary<BoundsInt, List<(BoundsInt, double)>> vertex;
+
+    public Graph()
+    {
+        vertex = new Dictionary<BoundsInt, List<(BoundsInt, double)>>();
+    }
+
+    public void addEdge(BoundsInt source, BoundsInt target, double weight)
+    {
+        if (!vertex.ContainsKey(source))
+        {
+            vertex[source] = new List<(BoundsInt, double)>();
+        }
+
+        vertex[source].Add((target, weight));
+
+        // Since it's an undirected graph, add an edge from target to source as well
+        if (!vertex.ContainsKey(target))
+        {
+            vertex[target] = new List<(BoundsInt, double)>();
+        }
+
+        vertex[target].Add((source, weight));
+    }
+
+    public List<(BoundsInt, double)> GetNeighbors(BoundsInt vertex)
+    {
+        if (this.vertex.ContainsKey(vertex))
+        {
+            return this.vertex[vertex];
+        }
+        else
+        {
+            return new List<(BoundsInt, double)>();
+        }
+    }
+
+    public void Display()
+    {
+        foreach (var item in vertex)
+        {
+            Debug.Log($"Vertex: {item.Key}");
+
+            foreach (var neighbor in item.Value)
+            {
+                Debug.Log($"  Neighbor: {neighbor.Item1}, Weight: {neighbor.Item2}");
+            }
+        }
+    }
+
+    public Dictionary<BoundsInt, double> Dijkstra(BoundsInt start)
+    {
+        // Initialize distances dictionary with infinity for all vertices except the start vertex
+        Dictionary<BoundsInt, double> distances = new Dictionary<BoundsInt, double>();
+        foreach (var vertex in vertex.Keys)
+        {
+            distances[vertex] = double.PositiveInfinity;
+        }
+        distances[start] = 0;
+
+        // Priority queue to keep track of vertices to visit next
+        var queue = new PriorityQueue<BoundsInt>();
+        queue.Enqueue(start, 0);
+
+        while (!queue.IsEmpty)
+        {
+            var currentVertex = queue.Dequeue();
+
+            // Check all neighbors of the current vertex
+            foreach (var (neighbor, weight) in vertex[currentVertex])
+            {
+                // Calculate the new distance
+                double newDistance = distances[currentVertex] + weight;
+
+                // Update distance if newDistance is shorter
+                if (newDistance < distances[neighbor])
+                {
+                    distances[neighbor] = newDistance;
+                    queue.Enqueue(neighbor, newDistance);
+                }
+            }
+        }
+
+        return distances;
     }
 }
+
+// Helper class for priority queue
+public class PriorityQueue<T>
+    {
+        private SortedDictionary<double, Queue<T>> dict;
+
+        public PriorityQueue()
+        {
+            dict = new SortedDictionary<double, Queue<T>>();
+        }
+
+        public bool IsEmpty => dict.Count == 0;
+
+        public void Enqueue(T item, double priority)
+        {
+            if (!dict.ContainsKey(priority))
+            {
+                dict[priority] = new Queue<T>();
+            }
+            dict[priority].Enqueue(item);
+        }
+
+        public T Dequeue()
+        {
+            var pair = dict.First();
+            var item = pair.Value.Dequeue();
+            if (pair.Value.Count == 0)
+            {
+                dict.Remove(pair.Key);
+            }
+            return item;
+        }
+    }
+
+
+
+
+//public class Graph
+//{
+//    // Dictionary to store the adjacency list
+//    private Dictionary<BoundsInt, List<(BoundsInt, double)>> adjacencyList;
+
+//    // Constructor to initialize the graph
+//    public Graph()
+//    {
+//        adjacencyList = new Dictionary<BoundsInt, List<(BoundsInt, double)>>();
+//    }
+
+//    // Method to add an edge between two vertices with a given weight
+//    public void AddEdge(BoundsInt source, BoundsInt destination, double weight)
+//    {
+//        // Check if the source vertex already exists in the graph
+//        if (!adjacencyList.ContainsKey(source))
+//        {
+//            adjacencyList[source] = new List<(BoundsInt, double)>();
+//        }
+
+//        // Add the destination vertex and its weight to the adjacency list of the source vertex
+//        adjacencyList[source].Add((destination, weight));
+
+//        // Since it's an undirected graph, add an edge from the destination to the source as well
+//        if (!adjacencyList.ContainsKey(destination))
+//        {
+//            adjacencyList[destination] = new List<(BoundsInt, double)>();
+//        }
+
+//        // Add the source vertex and its weight to the adjacency list of the destination vertex
+//        adjacencyList[destination].Add((source, weight));
+//    }
+
+//    // Method to get the neighbors of a vertex
+//    public List<(BoundsInt, double)> GetNeighbors(BoundsInt vertex)
+//    {
+//        // Check if the vertex exists in the graph
+//        if (adjacencyList.ContainsKey(vertex))
+//        {
+//            return adjacencyList[vertex];
+//        }
+//        else
+//        {
+//            // If the vertex doesn't exist, return an empty list
+//            return new List<(BoundsInt, double)>();
+//        }
+//    }
+//}

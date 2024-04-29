@@ -59,23 +59,41 @@ public class TilMapVisulaizer : MonoBehaviour
         int typeAsInt = Convert.ToInt32(BinaryType, 2);
         TileBase tile = null;
         if(WallTypesHelper.wallTop.Contains(typeAsInt)){
+
             tile = wallTop;
+
         }else if(WallTypesHelper.wallInnerCornerDownLeft.Contains(typeAsInt)){
+
             tile = wallInnerCornerDownLeft;
+
         }else if(WallTypesHelper.wallInnerCornerDownRight.Contains(typeAsInt)){
+
             tile = wallInnerCornerDownRight;
+
         }else if(WallTypesHelper.wallDiagonalCornerDownLeft.Contains(typeAsInt)){
+
             tile = wallDiagonalCornerDownLeft;
+
         }else if(WallTypesHelper.wallDiagonalCornerDownRight.Contains(typeAsInt)){
+
             tile = wallDiagonalCornerDownRight;
+
         }else if(WallTypesHelper.wallDiagonalCornerUpRight.Contains(typeAsInt)){
+
             tile = wallDiagonalCornerUpRight;
+
         }else if(WallTypesHelper.wallDiagonalCornerUpLeft.Contains(typeAsInt)){
+
             tile = wallDiagonalCornerUpLeft;
+
         }else if(WallTypesHelper.wallFullEightDirections.Contains(typeAsInt)){
+
             tile = wallFull;
+
         }else if(WallTypesHelper.wallBottmEightDirections.Contains(typeAsInt)){
+
             tile = wallBottom;
+
         }
         if(tile!=null)
         paintSingleTile(wallTilemap,tile,position);
