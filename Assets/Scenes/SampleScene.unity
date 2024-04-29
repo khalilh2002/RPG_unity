@@ -413,7 +413,7 @@ GameObject:
   - component: {fileID: 792160107}
   m_Layer: 0
   m_Name: player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -430,9 +430,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 565538ef95542224d91fab23faa74cb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boss: {fileID: 0}
-  player: {fileID: 0}
-  obj: {fileID: 996361052}
+  boss: {fileID: 1934467793}
+  player: {fileID: 792160106}
+  mapGenerator: {fileID: 996361052}
 --- !u!95 &792160104
 Animator:
   serializedVersion: 5
@@ -514,7 +514,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 792160102}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 4.71, y: 15.27, z: 0}
   m_LocalScale: {x: 4, y: 4, z: 1}
   m_ConstrainProportionsScale: 0
@@ -553,7 +553,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.025260866, y: -0.26944888}
+  m_Offset: {x: 0.025260866, y: -0.24927557}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -564,7 +564,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5064074, y: 0.74778867}
+  m_Size: {x: 0.38536704, y: 0.5460546}
   m_EdgeRadius: 0
 --- !u!50 &792160108
 Rigidbody2D:
@@ -580,7 +580,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -592,7 +592,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &792160109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -605,7 +605,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ddd154026872f74f98d0d8ca4d4fc73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 25
+  moveSpeed: 5
 --- !u!1 &856754632
 GameObject:
   m_ObjectHideFlags: 0
@@ -4447,6 +4447,9 @@ MonoBehaviour:
   tilmapVisulaizer: {fileID: 900231602}
   startPosition: {x: 0, y: 0}
   simpleRandomWalkParametre: {fileID: 11400000, guid: e2552a6f3448e894d9bdf68fcc9b7c25, type: 2}
+  dijkstraOption: 0
+  player: {fileID: 792160106}
+  boss: {fileID: 1934467793}
   minRoomWidth: 10
   minRoomHeight: 10
   mapWidth: 53
@@ -4825,9 +4828,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1934467790}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 569aefa14dc1d9944abe6b560e7421ca, type: 3}
+  m_Script: {fileID: 11500000, guid: e890fc99be5e9a04ab3100e010e239b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 792160106}
+  mapGenerator: {fileID: 996361052}
 --- !u!1 &1989386210
 GameObject:
   m_ObjectHideFlags: 0
@@ -11550,5 +11555,5 @@ SceneRoots:
   - {fileID: 900231603}
   - {fileID: 2072549401}
   - {fileID: 996361053}
-  - {fileID: 792160106}
   - {fileID: 1934467793}
+  - {fileID: 792160106}
