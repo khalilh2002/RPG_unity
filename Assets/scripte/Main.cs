@@ -6,6 +6,8 @@ using UnityEngine;
 public class Main : MonoBehaviour
 {
 
+    
+
     [SerializeField] Transform boss;
 
     [SerializeField] Transform player;
@@ -15,10 +17,13 @@ public class Main : MonoBehaviour
     Vector3 test_x = default;
     double test_v = default;
 
+
     void Start()
     {
         // player = GetComponent<Transform>();
         //boss = GetComponent<Transform>();
+
+       
 
 
        

@@ -11,6 +11,7 @@ public class playerMovement : MonoBehaviour
     bool IsRunning = false;
     bool lastInputWasUp = false; // Default to up
     bool lastInputWasDown = false;
+    bool isAttacking = false;
 
     void Start()
     {
@@ -53,6 +54,18 @@ public class playerMovement : MonoBehaviour
         animator.SetBool("IsRunningUp", verticalInput > 0 && IsRunning);
         animator.SetBool("IsRunningDown", verticalInput < 0 && IsRunning);
 
+        // Attack
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            isAttacking = true;
+            animator.SetBool("isAttacking", true);
+        }
+        else if (Input.GetKeyUp(KeyCode.X))
+        {
+            isAttacking = false;
+            animator.SetBool("isAttacking", false);
+        }
+
         // Update lastInputWasUp
         if (verticalInput > 0)
         {
@@ -63,7 +76,6 @@ public class playerMovement : MonoBehaviour
         {
             lastInputWasDown = true;
             lastInputWasUp = false;
-            
         }
     }
 }
