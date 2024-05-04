@@ -15,6 +15,8 @@ public class RoomFirstMapGenerator : simpleWalkMapGenerator
     public static List<BoundsInt>  listRoomOrigin ;
     public static Dictionary<BoundsInt, double> djikstra_result ;
 
+
+
     //addede for djikstra
     Graph graph_main = new Graph();
 
@@ -30,6 +32,7 @@ public class RoomFirstMapGenerator : simpleWalkMapGenerator
     static public int offsetvar ;
     //private bool randomWalkRooms = false ;
 
+    
     protected override void RunProceduralGeneration()
     { 
         offsetvar = offset;

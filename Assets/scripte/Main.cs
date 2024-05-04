@@ -8,25 +8,35 @@ public class Main : MonoBehaviour
     [SerializeField] Transform player;
     [SerializeField] RoomFirstMapGenerator obj;
     [SerializeField] GameObject coinPrefab;
+    [SerializeField] GameObject enemyPrefab;
 
     Vector3 maxRoom = default;
     double maxDistance = default;
-    GameObject firstCoin;
+
+    GameObject originalCoin; // Store the original coin prefab
+    GameObject originalEnemy; // Store the original enemy prefab
 
     void Start()
     {
         obj.runRoomFirstMapGeneratorClass();
 
-        // Calculate the maximum distance from the player room to the boss room
-        Dictionary<BoundsInt, double> distances = RoomFirstMapGenerator.djikstra_result;
-        double maxDistance = GetMaxDistance(distances);
+        // Store the original coin and enemy prefab
+        originalCoin = coinPrefab;
+        originalEnemy = enemyPrefab;
 
-        // Spawn coins in each room based on the distance from the player room
+        // Calculate the maximum distance from the player room to any other room
+        Dictionary<BoundsInt, double> distances = RoomFirstMapGenerator.djikstra_result;
+        maxDistance = GetMaxDistance(distances);
+
+        // Spawn coins and enemies in each room based on the distance from the player room
         foreach (BoundsInt roomBounds in RoomFirstMapGenerator.listRoomOrigin)
         {
             double distance = distances[roomBounds];
             int numberOfCoins = CalculateNumberOfCoins(distance, maxDistance);
-            SpawnCoinsRandomlyInRoom(roomBounds, numberOfCoins);
+            int numberOfEnemies = CalculateNumberOfEnemies(distance, maxDistance);
+
+            // Spawn coins and enemies
+            SpawnCoinsAndEnemiesRandomlyInRoom(roomBounds, numberOfCoins, numberOfEnemies);
         }
 
         // Set initial positions
@@ -50,16 +60,58 @@ public class Main : MonoBehaviour
             Dictionary<BoundsInt, double> valueBoss = max_distance(djikstra_player, ref maxRoom, ref maxDistance);
             boss.transform.position = maxRoom;
 
-            AdjustCoinsBasedOnDistance(djikstra_player);
+            AdjustCoinsAndEnemiesBasedOnDistance(djikstra_player);
         }
     }
 
-    void SpawnCoinsRandomlyInRoom(BoundsInt roomBounds, int numberOfCoins)
+    void AdjustCoinsAndEnemiesBasedOnDistance(Dictionary<BoundsInt, double> distances)
     {
-        int minX = roomBounds.xMin + (RoomFirstMapGenerator.offsetvar+1);
-        int maxX = roomBounds.xMax - (RoomFirstMapGenerator.offsetvar+1);
-        int minY = roomBounds.yMin + (RoomFirstMapGenerator.offsetvar+1);
-        int maxY = roomBounds.yMax - (RoomFirstMapGenerator.offsetvar+1);
+        // Clear all existing coins and enemies except the original ones
+        RemoveAllCoinsAndEnemiesExceptOriginal();
+
+        // Get the distance from the player room to the boss room
+        maxDistance = GetMaxDistance(distances);
+
+        // Respawn coins and enemies from the original ones
+        foreach (BoundsInt roomBounds in RoomFirstMapGenerator.listRoomOrigin)
+        {
+            double distance = distances[roomBounds];
+            int numberOfCoins = CalculateNumberOfCoins(distance, maxDistance);
+            int numberOfEnemies = CalculateNumberOfEnemies(distance, maxDistance);
+
+            // Spawn coins and enemies from the original ones
+            SpawnCoinsAndEnemiesRandomlyInRoom(roomBounds, numberOfCoins, numberOfEnemies);
+        }
+    }
+
+    void RemoveAllCoinsAndEnemiesExceptOriginal()
+    {
+        // Find all existing coins and enemies
+        GameObject[] existingCoins = GameObject.FindGameObjectsWithTag("Coin");
+        GameObject[] existingEnemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+        // Destroy all existing coins and enemies except the original ones
+        foreach (GameObject coin in existingCoins)
+        {
+            if (coin != originalCoin)
+                Destroy(coin);
+        }
+
+        foreach (GameObject enemy in existingEnemies)
+        {
+            if (enemy != originalEnemy)
+                Destroy(enemy);
+        }
+    }
+
+    void SpawnCoinsAndEnemiesRandomlyInRoom(BoundsInt roomBounds, int numberOfCoins, int numberOfEnemies)
+    {
+         // Skip if it's the boss room
+        if (roomBounds.center == maxRoom) return;
+        int minX = roomBounds.xMin + (RoomFirstMapGenerator.offsetvar + 1);
+        int maxX = roomBounds.xMax - (RoomFirstMapGenerator.offsetvar + 1);
+        int minY = roomBounds.yMin + (RoomFirstMapGenerator.offsetvar + 1);
+        int maxY = roomBounds.yMax - (RoomFirstMapGenerator.offsetvar + 1);
 
         for (int i = 0; i < numberOfCoins; i++)
         {
@@ -68,109 +120,73 @@ public class Main : MonoBehaviour
                 Random.Range(minY, maxY)
             );
 
-            GameObject coin = Instantiate(coinPrefab, new Vector3(randomPosition.x, randomPosition.y, 0), Quaternion.identity);
+            Instantiate(originalCoin, new Vector3(randomPosition.x, randomPosition.y, 0), Quaternion.identity).tag = "Coin";
+        }
+
+        for (int i = 0; i < numberOfEnemies; i++)
+        {
+            Vector2Int randomPosition = new Vector2Int(
+                Random.Range(minX, maxX),
+                Random.Range(minY, maxY)
+            );
+
+            Instantiate(originalEnemy, new Vector3(randomPosition.x, randomPosition.y, 0), Quaternion.identity).tag = "Enemy";
         }
     }
 
     int CalculateNumberOfCoins(double distance, double maxDistance)
     {
-        // Adjust the number of coins based on the distance
-        // The farther the room, the higher the number of coins
-        float t = (float)(distance / maxDistance); // Convert to a value between 0 and 1
-        int minCoins = 1; // Minimum number of coins for the player room
-        int maxCoins = 10; // Maximum number of coins for the boss room
+        float t = (float)(distance / maxDistance);
+        int minCoins = 1;
+        int maxCoins = 10;
         return Mathf.RoundToInt(Mathf.Lerp(minCoins, maxCoins, t));
+    }
+
+    int CalculateNumberOfEnemies(double distance, double maxDistance)
+    {
+        float t = (float)(distance / maxDistance);
+        int minEnemies = 0;
+        int maxEnemies = 5;
+        return Mathf.RoundToInt(Mathf.Lerp(minEnemies, maxEnemies, t));
     }
 
     double GetMaxDistance(Dictionary<BoundsInt, double> distances)
     {
         double maxDistance = double.NegativeInfinity;
-        foreach (var distance in distances.Values)
-        {
-            if (distance > maxDistance)
-            {
-                maxDistance = distance;
-            }
-        }
-        return maxDistance;
-    }
-
-    void AdjustCoinsBasedOnDistance(Dictionary<BoundsInt, double> distances)
-    {
-        // Get the distance from the player room to the boss room
-        double maxDistance = GetMaxDistance(distances);
-
-        foreach (BoundsInt roomBounds in RoomFirstMapGenerator.listRoomOrigin)
-        {
-            double distance = distances[roomBounds];
-            int numberOfCoins = CalculateNumberOfCoins(distance, maxDistance);
-
-            // Remove existing coins in the room
-            RemoveExistingCoinsInRoom(roomBounds);
-
-            // Spawn new coins in the room
-            SpawnCoinsRandomlyInRoom(roomBounds, numberOfCoins);
-        }
-    }
-
-    void RemoveExistingCoinsInRoom(BoundsInt roomBounds)
-    {
-        GameObject[] existingCoins = GameObject.FindGameObjectsWithTag("Coin");
-
-        foreach (GameObject coin in existingCoins)
-        {
-            Vector3 coinPosition = coin.transform.position;
-
-            if (roomBounds.Contains(new Vector3Int((int)coinPosition.x, (int)coinPosition.y, 0)))
-            {
-                Destroy(coin);
-            }
-        }
-    }
-
-    Vector3 GetFarthestPosition(Vector3 playerPosition, Dictionary<BoundsInt, double> distances)
-    {
-        double maxDistance = double.NegativeInfinity;
-        Vector3 farthestPosition = Vector3.zero;
+        BoundsInt maxBoundsInt = default;
 
         foreach (var item in distances)
         {
-            // Calculate the distance from the player to the current position
-            var distanceToPlayer = item.Value;
-
-            // If the distance is greater than the current maximum distance, update the max distance and farthest position
-            if (distanceToPlayer > maxDistance)
+            if (item.Value > maxDistance)
             {
-                maxDistance = distanceToPlayer;
-                farthestPosition = item.Key.center;
+                maxDistance = item.Value;
+                maxBoundsInt = item.Key;
             }
         }
 
-        return farthestPosition;
+        maxRoom = maxBoundsInt.center;
+        return maxDistance;
     }
 
     Dictionary<BoundsInt, double> max_distance(Dictionary<BoundsInt, double> distances, ref Vector3 x, ref double y)
     {
         double maxValue = double.NegativeInfinity;
-        BoundsInt maxBoundsint = default;
-
-        x = maxBoundsint.center;
-        y = maxValue;
+        BoundsInt maxBoundsInt = default;
 
         foreach (var item in distances)
         {
             if (item.Value > maxValue)
             {
                 maxValue = item.Value;
-                maxBoundsint = item.Key;
-
-                x = maxBoundsint.center;
-                y = maxValue;
+                maxBoundsInt = item.Key;
             }
         }
 
+        x = maxBoundsInt.center;
+        y = maxValue;
+
         Dictionary<BoundsInt, double> maxDict = new Dictionary<BoundsInt, double>();
-        maxDict[maxBoundsint] = maxValue;
+        maxDict[maxBoundsInt] = maxValue;
 
         return maxDict;
     }
