@@ -26,10 +26,13 @@ public class RoomFirstMapGenerator : simpleWalkMapGenerator
     private int mapWidth = 53 , mapHeight = 53;
     [SerializeField][Range(0,10)]
     private int offset = 3 ;
+
+    static public int offsetvar ;
     //private bool randomWalkRooms = false ;
 
     protected override void RunProceduralGeneration()
-    {
+    { 
+        offsetvar = offset;
         createRooms();
     }
 
