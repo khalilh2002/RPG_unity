@@ -212,11 +212,15 @@ public class RoomFirstMapGenerator : simpleWalkMapGenerator
         tilmapVisulaizer.clear();
         graph_main.clear();
         RunProceduralGeneration();
-        Debug.Log("runfirstvoid END END");
-        djikstra_result = graph_main.Dijkstra(FirstRoom);
-        foreach (var item in djikstra_result)
+        try
         {
-            Debug.Log("item : " + item);
+            djikstra_result = graph_main.Dijkstra(FirstRoom);
+
+        }
+        catch (KeyNotFoundException e)
+        {
+            Debug.Log(e.GetBaseException().Message);
+            runRoomFirstMapGeneratorClass();
         }
 
     }

@@ -9,8 +9,8 @@ public class Main : MonoBehaviour
     [SerializeField] RoomFirstMapGenerator obj;
     [SerializeField] GameObject coinPrefab;
 
-    Vector3 test_x = default;
-    double test_v = default;
+    Vector3 maxRoom = default;
+    double maxDistance = default;
     GameObject firstCoin;
 
     void Start()
@@ -31,8 +31,11 @@ public class Main : MonoBehaviour
 
         // Set initial positions
         var FirstRoom = RoomFirstMapGenerator.FirstRoom;
-        player.transform.position = FirstRoom.center;
-        boss.transform.position = GetFarthestPosition(player.transform.position, distances);
+        player.transform.position = new Vector3(FirstRoom.center.x, FirstRoom.center.y, FirstRoom.center.z);
+
+        Dictionary<BoundsInt, double> djikstra_player = RoomFirstMapGenerator.djikstra_result;
+        Dictionary<BoundsInt, double> valueBoss = max_distance(djikstra_player, ref maxRoom, ref maxDistance);
+        boss.transform.position = maxRoom;
     }
 
     void Update()
@@ -44,8 +47,8 @@ public class Main : MonoBehaviour
             player.transform.position = new Vector3(FirstRoom.center.x, FirstRoom.center.y, FirstRoom.center.z);
 
             Dictionary<BoundsInt, double> djikstra_player = RoomFirstMapGenerator.djikstra_result;
-            Dictionary<BoundsInt, double> valueBoss = max_distance(djikstra_player, ref test_x, ref test_v);
-            boss.transform.position = test_x;
+            Dictionary<BoundsInt, double> valueBoss = max_distance(djikstra_player, ref maxRoom, ref maxDistance);
+            boss.transform.position = maxRoom;
 
             AdjustCoinsBasedOnDistance(djikstra_player);
         }
