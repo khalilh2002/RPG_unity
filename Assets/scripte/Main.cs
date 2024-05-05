@@ -43,9 +43,14 @@ public class Main : MonoBehaviour
         var FirstRoom = RoomFirstMapGenerator.FirstRoom;
         player.transform.position = new Vector3(FirstRoom.center.x, FirstRoom.center.y, FirstRoom.center.z);
 
-        Dictionary<BoundsInt, double> djikstra_player = RoomFirstMapGenerator.djikstra_result;
-        Dictionary<BoundsInt, double> valueBoss = max_distance(djikstra_player, ref maxRoom, ref maxDistance);
-        boss.transform.position = maxRoom;
+        //Dictionary<BoundsInt, double> djikstra_player = RoomFirstMapGenerator.djikstra_result;
+
+        Dictionary<BoundsInt, double> djikstra_player = obj.graph_main.Dijkstra(FirstRoom);
+
+        //Dictionary<BoundsInt, double> valueBoss = max_distance(djikstra_player, ref maxRoom, ref maxDistance);
+
+        BoundsInt maxR = max_distance_room(djikstra_player);
+        boss.transform.position = maxR.center;
     }
 
     void Update()
@@ -56,9 +61,15 @@ public class Main : MonoBehaviour
             var FirstRoom = RoomFirstMapGenerator.FirstRoom;
             player.transform.position = new Vector3(FirstRoom.center.x, FirstRoom.center.y, FirstRoom.center.z);
 
-            Dictionary<BoundsInt, double> djikstra_player = RoomFirstMapGenerator.djikstra_result;
-            Dictionary<BoundsInt, double> valueBoss = max_distance(djikstra_player, ref maxRoom, ref maxDistance);
-            boss.transform.position = maxRoom;
+            //Dictionary<BoundsInt, double> djikstra_player = RoomFirstMapGenerator.djikstra_result;
+            //Dictionary<BoundsInt, double> valueBoss = max_distance(djikstra_player, ref maxRoom, ref maxDistance);
+            //boss.transform.position = maxRoom;
+
+            Dictionary<BoundsInt, double> djikstra_player = obj.graph_main.Dijkstra(FirstRoom);
+
+            BoundsInt maxR = max_distance_room(djikstra_player);
+
+            boss.transform.position = maxR.center;
 
             AdjustCoinsAndEnemiesBasedOnDistance(djikstra_player);
         }
@@ -168,10 +179,32 @@ public class Main : MonoBehaviour
         return maxDistance;
     }
 
-    Dictionary<BoundsInt, double> max_distance(Dictionary<BoundsInt, double> distances, ref Vector3 x, ref double y)
+    //Dictionary<BoundsInt, double> max_distance(Dictionary<BoundsInt, double> distances, ref Vector3 x, ref double y)
+    //{
+    //    double maxValue = double.NegativeInfinity;
+    //    BoundsInt maxBoundsInt = default;
+
+    //    foreach (var item in distances)
+    //    {
+    //        if (item.Value > maxValue)
+    //        {
+    //            maxValue = item.Value;
+    //            maxBoundsInt = item.Key;
+    //        }
+    //    }
+
+    //    x = maxBoundsInt.center;
+    //    y = maxValue;
+
+    //    Dictionary<BoundsInt, double> maxDict = new Dictionary<BoundsInt, double>();
+    //    maxDict[maxBoundsInt] = maxValue;
+
+    //    return maxDict;
+    //}
+    BoundsInt max_distance_room(Dictionary<BoundsInt, double> distances)
     {
         double maxValue = double.NegativeInfinity;
-        BoundsInt maxBoundsInt = default;
+        BoundsInt maxBoundsInt = default ;
 
         foreach (var item in distances)
         {
@@ -180,14 +213,8 @@ public class Main : MonoBehaviour
                 maxValue = item.Value;
                 maxBoundsInt = item.Key;
             }
-        }
+        }        
 
-        x = maxBoundsInt.center;
-        y = maxValue;
-
-        Dictionary<BoundsInt, double> maxDict = new Dictionary<BoundsInt, double>();
-        maxDict[maxBoundsInt] = maxValue;
-
-        return maxDict;
+        return maxBoundsInt;
     }
 }

@@ -10,6 +10,7 @@ TagManager:
   - Enemy
   - SpawnedEnemy
   - SpawnedCoin
+  - gridCell
   layers:
   - Default
   - TransparentFX

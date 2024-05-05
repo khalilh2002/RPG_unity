@@ -14,11 +14,14 @@ public class RoomFirstMapGenerator : simpleWalkMapGenerator
     public static BoundsInt FirstRoom ;
     public static List<BoundsInt>  listRoomOrigin ;
     public static Dictionary<BoundsInt, double> djikstra_result ;
+    static public int offsetvar;
 
 
+    private HashSet<Vector2Int> floor;
+    public HashSet<Vector2Int> getFloor { get => floor;}
 
     //addede for djikstra
-    Graph graph_main = new Graph();
+    public Graph graph_main = new Graph();
 
     
 
@@ -29,10 +32,13 @@ public class RoomFirstMapGenerator : simpleWalkMapGenerator
     [SerializeField][Range(0,10)]
     private int offset = 3 ;
 
-    static public int offsetvar ;
+
+    public int getMapWidth { get => mapWidth; }
+    public int getMapHeight { get => mapHeight;  }
+
     //private bool randomWalkRooms = false ;
 
-    
+
     protected override void RunProceduralGeneration()
     { 
         offsetvar = offset;
@@ -61,7 +67,7 @@ public class RoomFirstMapGenerator : simpleWalkMapGenerator
 
         HashSet<Vector2Int> corridors = ConnectRooms(roomCenters , roomlist);
         floor.UnionWith(corridors);
-        Debug.Log("hello this is floor content " + floor);
+        this.floor = floor;
         tilmapVisulaizer.paintFloorTiles(floor);
         WallGenerator.createWalls(floor,tilmapVisulaizer);
     }
@@ -212,16 +218,18 @@ public class RoomFirstMapGenerator : simpleWalkMapGenerator
 
 
     public void runRoomFirstMapGeneratorClass(){
-        tilmapVisulaizer.clear();
-        graph_main.clear();
-        RunProceduralGeneration();
+        
         try
         {
+            tilmapVisulaizer.clear();
+            graph_main.clear();
+            RunProceduralGeneration();
             djikstra_result = graph_main.Dijkstra(FirstRoom);
 
         }
         catch (KeyNotFoundException e)
         {
+
             Debug.Log(e.GetBaseException().Message);
             runRoomFirstMapGeneratorClass();
         }
