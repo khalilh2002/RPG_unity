@@ -13,8 +13,12 @@ public class Main : MonoBehaviour
     Vector3 maxRoom = default;
     double maxDistance = default;
 
-    GameObject originalCoin; // Store the original coin prefab
-    GameObject originalEnemy; // Store the original enemy prefab
+    public GameObject originalCoin; // Store the original coin prefab
+    public GameObject originalEnemy; // Store the original enemy prefab
+     CoinCollector coinCollector; // Reference to the CoinCollector script
+
+     // Dictionary to track if coins are collected in each room
+    Dictionary<BoundsInt, bool> roomCoinsCollected = new Dictionary<BoundsInt, bool>();
 
     void Start()
     {
@@ -37,6 +41,8 @@ public class Main : MonoBehaviour
 
             // Spawn coins and enemies
             SpawnCoinsAndEnemiesRandomlyInRoom(roomBounds, numberOfCoins, numberOfEnemies);
+            // Mark coins as not collected initially
+            roomCoinsCollected[roomBounds] = false;
         }
 
         // Set initial positions
@@ -46,6 +52,15 @@ public class Main : MonoBehaviour
         Dictionary<BoundsInt, double> djikstra_player = RoomFirstMapGenerator.djikstra_result;
         Dictionary<BoundsInt, double> valueBoss = max_distance(djikstra_player, ref maxRoom, ref maxDistance);
         boss.transform.position = maxRoom;
+
+         // Get the CoinCollector script
+        coinCollector = GameObject.FindObjectOfType<CoinCollector>();
+
+        // Disable automatic collection at start
+    if (coinCollector != null)
+    {
+        coinCollector.DeactivateAutomaticCollection(); // Add this line
+    }
     }
 
     void Update()
@@ -61,6 +76,26 @@ public class Main : MonoBehaviour
             boss.transform.position = maxRoom;
 
             AdjustCoinsAndEnemiesBasedOnDistance(djikstra_player);
+
+            if (coinCollector != null)
+    {
+        coinCollector.DeactivateAutomaticCollection(); // Add this line
+    }
+
+            // Activate or deactivate CoinCollector based on coins collected in the current room
+        BoundsInt currentRoomBounds = GetCurrentRoomBounds();
+        if (coinCollector != null && roomCoinsCollected.ContainsKey(currentRoomBounds))
+        {
+            bool coinsCollected = roomCoinsCollected[currentRoomBounds];
+            if (coinsCollected)
+            {
+                coinCollector.DeactivateAutomaticCollection();
+            }
+            else
+            {
+                coinCollector.OnCoinsGenerated(originalCoin);
+            }
+        }
         }
     }
 
@@ -189,5 +224,27 @@ public class Main : MonoBehaviour
         maxDict[maxBoundsInt] = maxValue;
 
         return maxDict;
+    }
+
+    public BoundsInt GetCurrentRoomBounds()
+    {
+        Vector3 playerPosition = player.transform.position;
+        foreach (BoundsInt roomBounds in RoomFirstMapGenerator.listRoomOrigin)
+        {
+            if (roomBounds.Contains(new Vector3Int((int)playerPosition.x, (int)playerPosition.y, (int)playerPosition.z)))
+            {
+                return roomBounds;
+            }
+        }
+        return default;
+    }
+
+    // Function to set the collected status of coins in a room
+    public void SetCoinsCollectedStatus(BoundsInt roomBounds, bool collected)
+    {
+        if (roomCoinsCollected.ContainsKey(roomBounds))
+        {
+            roomCoinsCollected[roomBounds] = collected;
+        }
     }
 }

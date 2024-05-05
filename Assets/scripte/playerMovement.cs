@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class playerMovement : MonoBehaviour
 {
-    Animator animator;
+    public Animator animator;
     SpriteRenderer spriteRenderer;
-    [SerializeField] float speed = 25f;
+    [SerializeField] public float speed = 25f;
+
+    public static float pspeed;
 
     bool IsRunning = false;
     bool lastInputWasUp = false; // Default to up
@@ -15,6 +17,7 @@ public class playerMovement : MonoBehaviour
 
     void Start()
     {
+        pspeed = speed;
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
