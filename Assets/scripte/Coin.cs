@@ -19,4 +19,21 @@ public class Coin : MonoBehaviour
     {
         
     }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+       // Check if the object that collided with the coin is the player
+        if (other.CompareTag("Player"))
+        {
+            // Destroy the coin's game object
+            Destroy(gameObject);
+
+            // Remove the coin from the list in CoinCollector script
+            CoinCollector coinCollector = FindObjectOfType<CoinCollector>();
+            if (coinCollector != null)
+            {
+                coinCollector.RemoveCoin(transform);
+            }
+        }
+    }
 }
