@@ -1,29 +1,47 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class playerMovement : MonoBehaviour
 {
     public Animator animator;
-    SpriteRenderer spriteRenderer;
+    public SpriteRenderer spriteRenderer;
     [SerializeField] public float speed = 25f;
 
     public static float pspeed;
 
-    bool IsRunning = false;
-    bool lastInputWasUp = false; // Default to up
-    bool lastInputWasDown = false;
+
+    public bool IsRunning = false;
+    public bool lastInputWasUp = false; // Default to up
+    public bool lastInputWasDown = false;
     bool isAttacking = false;
 
+     public GameObject hitbox; // Reference to the hitbox object
+// Offset for hitbox position
+   public Vector3 offset = Vector3.zero;
+  public Vector3 upOffset = new Vector3(0f, 0.1f, 0f);
+public Vector3 downOffset = new Vector3(0f, -2.5f, 0f);
+public Vector3 leftOffset = new Vector3(-1.3f, -1.6f, 0f);
+public Vector3 rightOffset = new Vector3(1.5f, -1.6f, 0f);
+
+    
     void Start()
     {
         pspeed = speed;
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+         // Deactivate the hitbox
+        hitbox.SetActive(false);
+        offset = rightOffset;
+        
+        
     }
 
     void Update()
     {
+        
         float verticalInput = Input.GetAxis("Vertical");
         float horizontalInput = Input.GetAxis("Horizontal");
 
@@ -33,6 +51,10 @@ public class playerMovement : MonoBehaviour
         // Check if the player is running
         IsRunning = (horizontalInput != 0 || verticalInput != 0);
         animator.SetBool("IsRunning", IsRunning);
+       // Update hitbox position based on player's position and direction
+        
+        hitbox.transform.position = transform.position + offset;
+
 
         // Flip sprite if moving horizontally
         if (horizontalInput < 0)
@@ -40,12 +62,14 @@ public class playerMovement : MonoBehaviour
             spriteRenderer.flipX = true;
             lastInputWasDown = false;
             lastInputWasUp = false;
+            offset = leftOffset;
         }
         else if (horizontalInput > 0)
         {
             spriteRenderer.flipX = false;
             lastInputWasDown = false;
             lastInputWasUp = false;
+            offset = rightOffset;
         }
 
         // Set Idle animations
@@ -62,16 +86,19 @@ public class playerMovement : MonoBehaviour
         {
             isAttacking = true;
             animator.SetBool("isAttacking", true);
+            hitbox.SetActive(true);
         }
         else if (Input.GetKeyUp(KeyCode.X))
         {
             isAttacking = false;
             animator.SetBool("isAttacking", false);
+            hitbox.SetActive(false);
         }
 
         // Update lastInputWasUp
         if (verticalInput > 0)
         {
+            offset = upOffset;
             lastInputWasUp = true;
             lastInputWasDown = false;
         }
@@ -79,6 +106,7 @@ public class playerMovement : MonoBehaviour
         {
             lastInputWasDown = true;
             lastInputWasUp = false;
+            offset = downOffset;
         }
     }
 }

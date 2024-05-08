@@ -94,52 +94,69 @@ public class CoinCollector : MonoBehaviour
     }
 
     void MoveToNextCoin()
+{
+    // Ensure that the current coin index is within the bounds of the list
+    if (currentCoinIndex >= coins.Count)
     {
-        // Ensure that the current coin index is within the bounds of the list
-        if (currentCoinIndex >= coins.Count)
-        {
-            automaticCollectionActive = false;
-            return;
-        }
-
-        // Find the nearest coin among the remaining coins
-        Transform nearestCoin = FindNearestCoin();
-
-        // Ensure that there is a nearest coin and it hasn't been destroyed
-        if (nearestCoin == null)
-        {
-            Debug.LogWarning("No nearest coin found. Stopping automatic collection.");
-            automaticCollectionActive = false;
-            return;
-        }
-
-        // Calculate direction towards the nearest coin
-        Vector3 direction = (nearestCoin.position - player.position).normalized;
-
-        // Move the player towards the nearest coin
-        player.Translate(direction * playerSpeed * Time.deltaTime);
-
-        Debug.Log("Moving towards nearest coin...");
-
-        // Check if player reached the nearest coin
-        if (Vector3.Distance(player.position, nearestCoin.position) < 0.5f)
-        {
-            // Remove the collected coin from the list
-            coins.Remove(nearestCoin);
-
-            Debug.Log("Coin collected. Remaining coins: " + coins.Count);
-
-            // Check if all coins in the room are collected
-            if (coins.Count == 0)
-            {
-                // Get the current room bounds
-                BoundsInt roomBounds = mainScript.GetCurrentRoomBounds();
-                // Inform Main script that all coins in this room are collected
-                mainScript.SetCoinsCollectedStatus(roomBounds, true);
-            }
-        }
+        automaticCollectionActive = false;
+        return;
     }
 
+    // Find the nearest coin among the remaining coins
+    Transform nearestCoin = FindNearestCoin();
+
+    // Ensure that there is a nearest coin and it hasn't been destroyed
+    if (nearestCoin == null)
+    {
+        Debug.LogWarning("No nearest coin found. Stopping automatic collection.");
+        automaticCollectionActive = false;
+        return;
+    }
+
+    // Calculate direction towards the nearest coin
+    Vector3 direction = (nearestCoin.position - player.position).normalized;
+
+    // Round the direction to the nearest main direction
+    direction = RoundDirection(direction);
+
+    // Move the player towards the nearest coin
+    player.Translate(direction * playerSpeed * Time.deltaTime);
+
+    Debug.Log("Moving towards nearest coin...");
+
+    // Check if player reached the nearest coin
+    if (Vector3.Distance(player.position, nearestCoin.position) < 0.5f)
+    {
+        // Remove the collected coin from the list
+        coins.Remove(nearestCoin);
+
+        Debug.Log("Coin collected. Remaining coins: " + coins.Count);
+
+        // Check if all coins in the room are collected
+        if (coins.Count == 0)
+        {
+            // Get the current room bounds
+            BoundsInt roomBounds = mainScript.GetCurrentRoomBounds();
+            // Inform Main script that all coins in this room are collected
+            mainScript.SetCoinsCollectedStatus(roomBounds, true);
+        }
+    }
+}
+
+Vector3 RoundDirection(Vector3 direction)
+{
+    // Round direction to the nearest main direction
+    if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+    {
+        // Horizontal movement dominant
+        return new Vector3(Mathf.Sign(direction.x), 0f, 0f);
+    }
+    else
+    {
+        // Vertical movement dominant
+        return new Vector3(0f, Mathf.Sign(direction.y), 0f);
+    }
+}
     Transform FindNearestCoin()
     {
         Transform nearestCoin = null;
@@ -177,17 +194,44 @@ public class CoinCollector : MonoBehaviour
             Debug.Log("Coin removed. Remaining coins: " + coins.Count);
         }
     }
-    // Function to update player animations based on movement direction
-    void UpdatePlayerAnimations()
-    {
-        float horizontalInput = Input.GetAxisRaw("Horizontal");
-        float verticalInput = Input.GetAxisRaw("Vertical");
+ void UpdatePlayerAnimations()
+{
+    // Get the position of the player and the coin
+    Vector3 playerPos = player.position;
+    Vector3 coinPos = coins[currentCoinIndex].position;
 
-        // Set animator parameters based on movement direction
-        playerMovementScript.animator.SetBool("IsRunning", horizontalInput < 0);
-        playerMovementScript.animator.SetBool("IsRunning", horizontalInput > 0);
-        playerMovementScript.animator.SetBool("IsRunningUp", verticalInput > 0);
-        playerMovementScript.animator.SetBool("IsRunningDown", verticalInput < 0);
-        playerMovementScript.animator.SetBool("IsIdle", horizontalInput == 0 && verticalInput == 0);
+    // Determine animation parameters based on movement direction
+    bool isRunning = Mathf.Abs(playerPos.x - coinPos.x) > 0;
+
+    // Set animator parameters
+    playerMovementScript.animator.SetBool("IsRunning", isRunning);
+
+    // Set sprite flip and offset based on horizontal position
+    if (playerPos.x < coinPos.x)
+    {
+        // Player should move right
+        playerMovementScript.spriteRenderer.flipX = false;
+        playerMovementScript.lastInputWasDown = false;
+        playerMovementScript.lastInputWasUp = false;
+        playerMovementScript.offset = playerMovementScript.rightOffset;
+    }
+    else if (playerPos.x > coinPos.x)
+    {
+        // Player should move left
+        playerMovementScript.spriteRenderer.flipX = true;
+        playerMovementScript.lastInputWasDown = false;
+        playerMovementScript.lastInputWasUp = false;
+        playerMovementScript.offset = playerMovementScript.leftOffset;
     }
 }
+
+
+
+}
+     
+
+
+
+
+
+

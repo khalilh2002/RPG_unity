@@ -11,6 +11,7 @@ TagManager:
   - SpawnedEnemy
   - SpawnedCoin
   - gridCell
+  - Hitbox
   layers:
   - Default
   - TransparentFX
