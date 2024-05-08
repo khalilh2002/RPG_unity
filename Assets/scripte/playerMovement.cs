@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class playerMovement : MonoBehaviour
 {
@@ -24,6 +25,9 @@ public class playerMovement : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetMouseButtonDown(0))
+        {
+        }
         float verticalInput = Input.GetAxis("Vertical");
         float horizontalInput = Input.GetAxis("Horizontal");
 

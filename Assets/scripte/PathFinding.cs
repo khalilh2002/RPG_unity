@@ -1,12 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
+using static System.Collections.Specialized.BitVector32;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class PathFinding
 {
     private const int MOVE_STRAIGHT_COST = 10;
-    private const int MOVE_DIAGONAL_COST = 14;
+    private const int MOVE_DIAGONAL_COST = 10;
 
     private Grid<Node> gridPathFinding;
     private  Vector3 origin = Vector3.zero;
@@ -21,6 +24,14 @@ public class PathFinding
         gridPathFinding = new Grid<Node>(width, height ,2f,origin, (Grid<Node> g, int x, int y) => new Node(g, x, y));
         
     }
+
+    
+
+ 
+
+   
+
+
 
     public List<Node> FindPath(int startX , int startY , int endX , int endY)
     {
@@ -54,6 +65,8 @@ public class PathFinding
             Node currentNode = GetLowestFCost(openList);
             if (currentNode == endNode)
             {
+                openList.Clear();
+                closeList.Clear();
                 return CalculatePath(endNode);
             }
             openList.Remove(currentNode);
@@ -84,6 +97,8 @@ public class PathFinding
                 }
             }
         }
+        openList.Clear();
+        closeList.Clear();
         // out of nodes in open list coldnt find the path 
         return null;
     }
@@ -95,36 +110,36 @@ public class PathFinding
         {
             //left
             neighbourList.Add(GetNode(currentNode.X - 1, currentNode.Y ));
-            if (currentNode.Y - 1 >= 0)
-            {
-                //down left
-                neighbourList.Add(GetNode(currentNode.X - 1, currentNode.Y-1));
+            //if (currentNode.Y - 1 >= 0)
+            //{
+            //    //down left
+            //    neighbourList.Add(GetNode(currentNode.X - 1, currentNode.Y-1));
 
-            }
-            if (currentNode.Y + 1 < gridPathFinding.GetHeight())
-            {
-                //down up
-                neighbourList.Add(GetNode(currentNode.X - 1, currentNode.Y +1));
+            //}
+            //if (currentNode.Y + 1 < gridPathFinding.GetHeight())
+            //{
+            //    //down up
+            //    neighbourList.Add(GetNode(currentNode.X - 1, currentNode.Y +1));
 
-            }
+            //}
 
         }
         if (currentNode.X + 1 < gridPathFinding.GetWidth())
         {
             //right
             neighbourList.Add(GetNode(currentNode.X + 1, currentNode.Y));
-            if (currentNode.Y - 1 >= 0)
-            {
-                //down left
-                neighbourList.Add(GetNode(currentNode.X + 1, currentNode.Y - 1));
+            //if (currentNode.Y - 1 >= 0)
+            //{
+            //    //down left
+            //    neighbourList.Add(GetNode(currentNode.X + 1, currentNode.Y - 1));
 
-            }
-            if (currentNode.Y + 1 < gridPathFinding.GetHeight())
-            {
-                //down up
-                neighbourList.Add(GetNode(currentNode.X + 1, currentNode.Y + 1));
+            //}
+            //if (currentNode.Y + 1 < gridPathFinding.GetHeight())
+            //{
+            //    //down up
+            //    neighbourList.Add(GetNode(currentNode.X + 1, currentNode.Y + 1));
 
-            }
+            //}
 
         }
 

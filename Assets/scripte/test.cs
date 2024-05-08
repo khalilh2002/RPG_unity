@@ -6,57 +6,73 @@ using UnityEngine.UIElements;
 public class test : MonoBehaviour
 {
     [SerializeField] RoomFirstMapGenerator roomFirstMapGenerator;
-    [SerializeField] Transform player;
+    [SerializeField] float speed = 25f;
 
     private PathFinding pFinding;
 
+    [SerializeField]
+    Transform player;
+
+
+
+    private int currentPathIndex;
+    private List<Vector3> pathVectorList;
+
+    static private List<Vector3> gridPos;
+
+
     private void Start()
     {
-        this.pFinding = new PathFinding(roomFirstMapGenerator.getMapWidth, roomFirstMapGenerator.getMapHeight );
-        this.pFinding.createWalkabelGrid(roomFirstMapGenerator.getFloor);
-        this.pFinding.createGrid(roomFirstMapGenerator.getFloor);
+        pFinding = new PathFinding(roomFirstMapGenerator.getMapWidth, roomFirstMapGenerator.getMapHeight);
+        pFinding.createWalkabelGrid(roomFirstMapGenerator.getFloor);
+        pFinding.createGrid(roomFirstMapGenerator.getFloor);
 
 
     }
     private void Update()
     {
+       
 
-        if (Input.GetMouseButtonDown(0))
+
+        if (Input.GetMouseButton(0))
         {
+            StopAllCoroutines();
+            // Get the mouse position in world space
+            Vector3 targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            targetPosition.z = player.position.z; // Ensure the z-coordinate remains unchanged
+
+            // Get grid coordinates for the mouse position
+
             if (pFinding == null)
             {
-                Debug.Log(" in K pFindfin is null 789 ");
+                Debug.LogError("pFinding is null");
+                Time.timeScale = 0f;
 
             }
+            pFinding.GetGrid().GetXY(targetPosition, out int targetX, out int targetY);
+            pFinding.GetGrid().GetXY(player.position, out int x, out int y);
 
-
-            Vector3 mousDownPosition = GetMouseWorldPosition();
-            pFinding.GetGrid().GetXY(mousDownPosition, out int x, out int y);
-            
-            Debug.Log("mouse is wlakbale 789"+ pFinding.GetNode(x, y).isWalkable.ToString());
-            
-
-
-            pFinding.GetGrid().GetXY(player.position, out int x1, out int y1);
-            
-                Debug.Log("playe is wlakbale 789 " + pFinding.GetNode(x1, y1).isWalkable.ToString());   
-            
-
-            List<Node> path = pFinding.FindPath(x1, y1, x, y);
-            if (path != null)
+            List<Node> path = pFinding.FindPath(x, y, targetX, targetY);
+            if (path == null)
             {
-                for (int i = 0; i < path.Count-1; i++)
-                {
-                    Debug.DrawLine(new Vector3(path[i].X, path[i].Y) * 2f + Vector3.one * 1f, new Vector3(path[i + 1].X, path[i + 1].Y) * 2f + Vector3.one * 1f, Color.red,100f);
-                }
+                Debug.LogError("path node is null");
+                Time.timeScale = 0f;
             }
-            else
+            for (int i = 0; i < path.Count - 1; i++)
             {
-                Debug.Log("path is null 789 " );
+                Debug.DrawLine(nodeToV3(path[i]), nodeToV3(path[i + 1]), Color.red, 10f);
+                Debug.DrawRay(nodeToV3(path[i]), Vector3.up * 0.2f, Color.green, 10f);
 
             }
+            gridPos = NodetoVector3(path);
+            StartCoroutine(FollowPath());
+            gridPos = null;
+
+
+
 
         }
+
         if (Input.GetKey(KeyCode.G))
         {
             //pFinding = new PathFinding(roomFirstMapGenerator.getMapWidth, roomFirstMapGenerator.getMapHeight);
@@ -65,23 +81,63 @@ public class test : MonoBehaviour
             {
                 Debug.Log(" floor is null 789 ");
             }
-            else if (pFinding == null) {
+            else if (pFinding == null)
+            {
                 Debug.Log(" pFindfin is null 789 ");
 
             }
             else
             {
-                this.pFinding.createWalkabelGrid(roomFirstMapGenerator.getFloor);
+                pFinding.createWalkabelGrid(roomFirstMapGenerator.getFloor);
                 pFinding.createGrid(roomFirstMapGenerator.getFloor);
 
             }
 
         }
 
-       
+
+
 
 
     }
+
+   
+
+    IEnumerator FollowPath()
+    {
+            foreach (Vector3 pos in gridPos)
+            {
+                while (Vector3.Distance(transform.position, pos) > 0.5f)
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, (Vector3)pos, speed * Time.deltaTime);
+                    yield return null;
+                }
+                // Ensure exact positioning on the grid
+                transform.position = (Vector3)pos;
+                yield return null; // Optional: wait for a frame before moving to the next position
+            }
+        
+
+    }
+
+    List<Vector3> NodetoVector3(List<Node> l)
+    {
+        List<Vector3> newList = new List<Vector3>();
+        foreach (Node node in l)
+        {
+            newList.Add(nodeToV3(node));
+        }
+        return newList;
+    }
+
+
+
+    Vector3 nodeToV3(Node node)
+    {
+        return new Vector3(node.X, node.Y) * 2f + Vector3.one * 1f;
+    }
+
+
 
     /////////////////////////////
     // Get Mouse Position in World with Z = 0f
