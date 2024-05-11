@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Main : MonoBehaviour
 {
@@ -10,13 +11,13 @@ public class Main : MonoBehaviour
     [SerializeField] GameObject coinPrefab;
     [SerializeField] GameObject enemyPrefab;
 
-    public TextMesh coinText;
-    public TextMesh enemyText;
-    public TextMesh healthBar;
+    public TMP_Text coinText;
+    public TMP_Text enemyText;
+    public TMP_Text healthBar;
 
     private int coins = 0;
     private int enemiesKilled = 0;
-    private int maxHealth = 100;
+    private int maxHealth = 5;
     private int currentHealth;
 
     Vector3 maxRoom = default;
@@ -36,6 +37,8 @@ public class Main : MonoBehaviour
         // Store the original coin and enemy prefab
         originalCoin = coinPrefab;
         originalEnemy = enemyPrefab;
+         currentHealth = maxHealth;
+        UpdateUI();
 
         // Calculate the maximum distance from the player room to any other room
         Dictionary<BoundsInt, double> distances = RoomFirstMapGenerator.djikstra_result;
@@ -76,6 +79,40 @@ public class Main : MonoBehaviour
     {
         coinCollector.DeactivateAutomaticCollection(); // Add this line
     }
+    }
+
+    void UpdateUI()
+    {
+        coinText.text = "Coins: " + coins.ToString();
+        enemyText.text = "Enemies Killed: " + enemiesKilled.ToString();
+        healthBar.text = "Health: " + currentHealth.ToString();
+    }
+
+     public void CollectCoin()
+    {
+        coins++;
+        UpdateUI();
+    }
+
+    public void EnemyKilled()
+    {
+        enemiesKilled++;
+        UpdateUI();
+    }
+
+    public void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+        UpdateUI();
+    }
+
+    void Die()
+    {
+        // Implement what happens when the player dies
     }
 
     void Update()
