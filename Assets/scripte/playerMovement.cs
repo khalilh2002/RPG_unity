@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using JetBrains.Annotations;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class playerMovement : MonoBehaviour
 {
@@ -41,7 +42,11 @@ public Vector3 rightOffset = new Vector3(1.5f, -1.6f, 0f);
 
     void Update()
     {
-        
+        if (Input.GetMouseButtonDown(0))
+        {
+
+            
+        }
         float verticalInput = Input.GetAxis("Vertical");
         float horizontalInput = Input.GetAxis("Horizontal");
 
