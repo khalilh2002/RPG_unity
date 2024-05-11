@@ -93,7 +93,7 @@ public class RoomFirstMapGenerator : simpleWalkMapGenerator
                         {
                             double weight = UnityEngine.Vector3.Distance(room.center, otherRoom.center);
                             graph_main.addEdge(room, otherRoom, weight);
-                            Debug.Log("add edge wright : " + weight);
+                            //Debug.Log("add edge wright : " + weight);
                             
                         }
                     }
