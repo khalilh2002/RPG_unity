@@ -18,14 +18,15 @@ public class Main : MonoBehaviour
     private int coins = 0;
     private int enemiesKilled = 0;
     private int maxHealth = 5;
-    private int currentHealth;
+    public int currentHealth;
 
     Vector3 maxRoom = default;
     double maxDistance = default;
-
+    private Rigidbody2D rb;
     public GameObject originalCoin; // Store the original coin prefab
     public GameObject originalEnemy; // Store the original enemy prefab
      CoinCollector coinCollector; // Reference to the CoinCollector script
+     public SpriteRenderer playerSpriteRenderer; // Reference to the player's SpriteRenderer
 
      // Dictionary to track if coins are collected in each room
     Dictionary<BoundsInt, bool> roomCoinsCollected = new Dictionary<BoundsInt, bool>();
@@ -35,10 +36,12 @@ public class Main : MonoBehaviour
         obj.runRoomFirstMapGeneratorClass();
 
         // Store the original coin and enemy prefab
+        rb = GetComponent<Rigidbody2D>();
         originalCoin = coinPrefab;
         originalEnemy = enemyPrefab;
          currentHealth = maxHealth;
         UpdateUI();
+
 
         // Calculate the maximum distance from the player room to any other room
         Dictionary<BoundsInt, double> distances = RoomFirstMapGenerator.djikstra_result;
@@ -88,6 +91,10 @@ public class Main : MonoBehaviour
         healthBar.text = "Health: " + currentHealth.ToString();
     }
 
+ public void ApplyKnockback(Vector2 direction, float force)
+    {
+        rb.AddForce(direction * force, ForceMode2D.Impulse);
+    }
      public void CollectCoin()
     {
         coins++;
@@ -103,21 +110,15 @@ public class Main : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
+        
         UpdateUI();
     }
 
-    void Die()
-    {
-        
-    }
+   
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.Y))
+        if (Input.GetKey(KeyCode.Y) || (currentHealth <= 0))
         {
             obj.runRoomFirstMapGeneratorClass();
             var FirstRoom = RoomFirstMapGenerator.FirstRoom;
@@ -132,6 +133,13 @@ public class Main : MonoBehaviour
             BoundsInt maxR = max_distance_room(djikstra_player);
 
             boss.transform.position = maxR.center;
+            coins = 0;
+            enemiesKilled = 0;
+            currentHealth = maxHealth;
+            playerSpriteRenderer.color = Color.white;
+            
+            
+            UpdateUI();
 
             AdjustCoinsAndEnemiesBasedOnDistance(djikstra_player);
 

@@ -354,8 +354,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4292467488
+  m_fontColor: {r: 0.125534, g: 0.8584906, b: 0.8515916, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -372,8 +372,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
-  m_fontSizeBase: 30
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -803,8 +803,10 @@ MonoBehaviour:
   coinText: {fileID: 1220193376}
   enemyText: {fileID: 265497846}
   healthBar: {fileID: 1900002745}
+  currentHealth: 0
   originalCoin: {fileID: 28621142}
   originalEnemy: {fileID: 2131586608}
+  playerSpriteRenderer: {fileID: 792160105}
 --- !u!95 &792160104
 Animator:
   serializedVersion: 5
@@ -2458,8 +2460,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4280198858
+  m_fontColor: {r: 0.7924528, g: 0.649714, b: 0.115877524, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2476,8 +2478,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
-  m_fontSizeBase: 30
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2818,8 +2820,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4291301561
+  m_fontColor: {r: 0.72699785, g: 0.06278926, b: 0.7830189, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2836,8 +2838,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
-  m_fontSizeBase: 30
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4766,6 +4768,14 @@ PrefabInstance:
     - target: {fileID: 1114249993751048256, guid: bd16fef3ed77b614bb7063cdb5e9334f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5023408590105110958, guid: bd16fef3ed77b614bb7063cdb5e9334f, type: 3}
+      propertyPath: knockbackDistance
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5023408590105110958, guid: bd16fef3ed77b614bb7063cdb5e9334f, type: 3}
+      propertyPath: knockbackDuration
+      value: 0.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
