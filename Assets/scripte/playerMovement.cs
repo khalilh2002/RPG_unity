@@ -42,11 +42,7 @@ public Vector3 rightOffset = new Vector3(1.5f, -1.6f, 0f);
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-
-            
-        }
+       
         float verticalInput = Input.GetAxis("Vertical");
         float horizontalInput = Input.GetAxis("Horizontal");
 

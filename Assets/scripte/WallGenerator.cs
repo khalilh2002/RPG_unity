@@ -5,12 +5,18 @@ using UnityEngine;
 
 public static class WallGenerator
 {
+    static public HashSet<Vector2Int> wallsPositions;
     public static void createWalls(HashSet<Vector2Int> floorPosition , TilMapVisulaizer tilMapVisulaizer)
     {
+        wallsPositions = new HashSet<Vector2Int>();
+
         var basicWallPosition = FindWallsInDirections(floorPosition, Direction2D.cardinalDirectionList);
         var cornerWallPositions = FindWallsInDirections(floorPosition, Direction2D.diagonalDirectionList);
         CreateBasicWalls(tilMapVisulaizer, basicWallPosition, floorPosition);
         CreateCornerWalls(tilMapVisulaizer, cornerWallPositions, floorPosition);
+
+        wallsPositions.UnionWith(basicWallPosition);
+        wallsPositions.UnionWith(cornerWallPositions);
     }
 
     private static void CreateCornerWalls(TilMapVisulaizer tilMapVisulaizer, HashSet<Vector2Int> cornerWallPositions, HashSet<Vector2Int> floorPosition)
@@ -21,7 +27,15 @@ public static class WallGenerator
             foreach (var direction in Direction2D.eightDirectionsList)
             {
                 var neighbourPosition = position + direction;
+
+               
+                
                 if(floorPosition.Contains(neighbourPosition)){
+
+                    //added 
+                    wallsPositions.Add(neighbourPosition);
+
+
                     neighboursBinaryType += "1";
                 }
                 else{
@@ -40,6 +54,10 @@ public static class WallGenerator
             foreach(var direction in Direction2D.cardinalDirectionList){
                 var neighbourPosition = position + direction;
                 if(floorPosition.Contains(neighbourPosition)){
+
+                    //added 
+                    wallsPositions.Add(neighbourPosition);
+
                     neighboursBinaryType += "1";
                 }
                 else{

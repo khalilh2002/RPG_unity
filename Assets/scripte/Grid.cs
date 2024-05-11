@@ -44,7 +44,11 @@ public class Grid<GridOject>
         {
             for (int y = 0; y < gridArray.GetLength(1); y++)
             {
+                //floor
                 Vector2Int xitem = new Vector2Int((int)getWorldPosition(x, y).x, (int)getWorldPosition(x, y).y);
+
+                //wall
+
                 if (floor == null)
                 {
                     Debug.Log("value is null 1254");

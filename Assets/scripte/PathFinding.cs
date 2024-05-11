@@ -227,6 +227,11 @@ public class PathFinding
                 if (floor == null)
                 {
                     Debug.Log("value is null 1254");
+                
+                }else if (WallGenerator.wallsPositions.Contains(xitem))
+                {
+                    GetNode(x, y).setIsWalkable(false);
+
                 }
                 else if (floor.Contains(xitem))
                 {
