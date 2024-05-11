@@ -41,9 +41,9 @@ public class EnemyScript : MonoBehaviour
                 // Check if we successfully got the PlayerController script
                 if (player != null)
                 {
-                    // Deal damage to the player and destroy the enemy
+                    
                     player.TakeDamage(damage);
-                    Destroy(gameObject);
+                    
                 }
                 else
                 {

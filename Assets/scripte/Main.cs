@@ -112,7 +112,7 @@ public class Main : MonoBehaviour
 
     void Die()
     {
-        // Implement what happens when the player dies
+        
     }
 
     void Update()
