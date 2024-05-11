@@ -83,6 +83,10 @@ public class test : MonoBehaviour
             StartCoroutine(FollowPath());
             gridPos = null;
 
+            //test 
+            int dx = 5;
+            Debug.Log(dx);
+
 
 
 
