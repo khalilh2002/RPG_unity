@@ -211,22 +211,19 @@ Vector3 RoundDirection(Vector3 direction)
     {
         // Player should move right
         playerMovementScript.spriteRenderer.flipX = false;
-        playerMovementScript.lastInputWasDown = false;
-        playerMovementScript.lastInputWasUp = false;
         playerMovementScript.offset = playerMovementScript.rightOffset;
     }
     else if (playerPos.x > coinPos.x)
     {
         // Player should move left
-        playerMovementScript.spriteRenderer.flipX = true;
-        playerMovementScript.lastInputWasDown = false;
-        playerMovementScript.lastInputWasUp = false;
+        playerMovementScript.spriteRenderer.flipX = false;
         playerMovementScript.offset = playerMovementScript.leftOffset;
     }
+    
+
+
+
 }
-
-
-
 }
      
 
