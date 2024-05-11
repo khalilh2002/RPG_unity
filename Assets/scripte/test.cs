@@ -36,6 +36,21 @@ public class test : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
+            if (roomFirstMapGenerator.getFloor == null)
+            {
+                Debug.Log(" floor is null 789 ");
+            }
+            else if (pFinding == null)
+            {
+                Debug.Log(" pFindfin is null 789 ");
+
+            }
+            else
+            {
+                pFinding.createWalkabelGrid(roomFirstMapGenerator.getFloor);
+                pFinding.createGrid(roomFirstMapGenerator.getFloor);
+
+            }
             StopAllCoroutines();
             // Get the mouse position in world space
             Vector3 targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -77,21 +92,7 @@ public class test : MonoBehaviour
         {
             //pFinding = new PathFinding(roomFirstMapGenerator.getMapWidth, roomFirstMapGenerator.getMapHeight);
 
-            if (roomFirstMapGenerator.getFloor == null)
-            {
-                Debug.Log(" floor is null 789 ");
-            }
-            else if (pFinding == null)
-            {
-                Debug.Log(" pFindfin is null 789 ");
-
-            }
-            else
-            {
-                pFinding.createWalkabelGrid(roomFirstMapGenerator.getFloor);
-                pFinding.createGrid(roomFirstMapGenerator.getFloor);
-
-            }
+            
 
         }
 
