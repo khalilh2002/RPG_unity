@@ -10,6 +10,15 @@ public class Main : MonoBehaviour
     [SerializeField] GameObject coinPrefab;
     [SerializeField] GameObject enemyPrefab;
 
+    public TextMesh coinText;
+    public TextMesh enemyText;
+    public TextMesh healthBar;
+
+    private int coins = 0;
+    private int enemiesKilled = 0;
+    private int maxHealth = 100;
+    private int currentHealth;
+
     Vector3 maxRoom = default;
     double maxDistance = default;
 
