@@ -9,31 +9,91 @@ public class EnemyScript : MonoBehaviour
     public float flashDuration = 0.1f;
     public Color flashColor = Color.red;
     public LayerMask obstacleLayer; // Set this layer mask to the layer where your walls are placed
+    public float detectionDistance = 5f; // Distance at which the enemy starts following the player
+    public float jumpForce = 5f; // Force applied when the enemy jumps
+    public float jumpCooldown = 1f; // Time between jumps
 
     private Main player;
     private bool hasHitPlayer = false;
+    private bool canJump = true;
+    private Rigidbody2D rb;
+    private Animator animator;
+    private SpriteRenderer spriteRenderer;
 
-   private void OnTriggerEnter2D(Collider2D other)
+    private void Start()
+    {
+        // Find the player at the start
+        player = FindObjectOfType<Main>();
+        rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    private void Update()
+    {
+        if (player != null && canJump)
+        {
+            float distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
+
+            if (distanceToPlayer <= detectionDistance)
+            {
+                JumpTowardsPlayer();
+            }
+        }
+    }
+
+    private void JumpTowardsPlayer()
+    {
+        if (player == null) return;
+
+        Vector2 direction = (player.transform.position - transform.position).normalized;
+
+        // Apply jump force
+        rb.velocity = Vector2.zero; // Reset current velocity before applying jump force
+        rb.AddForce(direction * jumpForce, ForceMode2D.Impulse);
+
+        // Trigger jump animation
+        animator.SetTrigger("Jump");
+
+        // Flip sprite based on player's position
+        if (player.transform.position.x < transform.position.x)
+        {
+            spriteRenderer.flipX = true;
+        }
+        else
+        {
+            spriteRenderer.flipX = false;
+        }
+
+        // Start jump cooldown
+        StartCoroutine(JumpCooldown());
+    }
+
+    private IEnumerator JumpCooldown()
+    {
+        canJump = false;
+        yield return new WaitForSeconds(jumpCooldown);
+        canJump = true;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
     {
         // Check if the trigger is with the hitbox
         if (other.CompareTag("Hitbox"))
         {
-            // Get the PlayerController script from the player object
-            if (player == null)
-            {
-                player = other.GetComponentInParent<Main>();
+            // Get the Main script from the player object
+            Main playerHit = other.GetComponentInParent<Main>();
 
-                // Check if we successfully got the PlayerController script
-                if (player != null)
-                {
-                    // Destroy the enemy object
-                    player.EnemyKilled();
-                    Destroy(gameObject);
-                }
-                else
-                {
-                    Debug.LogError("Main not found!");
-                }
+            // Check if we successfully got the Main script
+            if (playerHit != null)
+            {
+                // Destroy the enemy object
+                playerHit.EnemyKilled();
+                Destroy(gameObject);
+            }
+            else
+            {
+                Debug.LogError("Main not found!");
             }
         }
     }
@@ -42,20 +102,20 @@ public class EnemyScript : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player") && !hasHitPlayer)
         {
-            player = collision.gameObject.GetComponent<Main>();
-            if (player != null)
+            Main playerCollided = collision.gameObject.GetComponent<Main>();
+            if (playerCollided != null)
             {
                 // Apply damage to the player
-                player.TakeDamage(damage);
+                playerCollided.TakeDamage(damage);
 
                 // Calculate knockback direction
-                Vector2 knockbackDirection = (player.transform.position - transform.position).normalized;
+                Vector2 knockbackDirection = (playerCollided.transform.position - transform.position).normalized;
 
                 // Move the player away from the enemy
-                StartCoroutine(KnockbackPlayer(knockbackDirection));
+                StartCoroutine(KnockbackPlayer(playerCollided, knockbackDirection));
 
                 // Flash the player sprite
-                StartCoroutine(FlashPlayerSprite());
+                StartCoroutine(FlashPlayerSprite(playerCollided));
 
                 // Set the flag to prevent repeated knockback
                 hasHitPlayer = true;
@@ -65,7 +125,7 @@ public class EnemyScript : MonoBehaviour
     }
 
     // Coroutine to move the player away from the enemy
-    IEnumerator KnockbackPlayer(Vector2 knockbackDirection)
+    IEnumerator KnockbackPlayer(Main player, Vector2 knockbackDirection)
     {
         // Calculate the position where the player should move to
         Vector2 targetPosition = (Vector2)player.transform.position + knockbackDirection * knockbackDistance;
@@ -94,7 +154,7 @@ public class EnemyScript : MonoBehaviour
     }
 
     // Coroutine to flash the player sprite
-    IEnumerator FlashPlayerSprite()
+    IEnumerator FlashPlayerSprite(Main player)
     {
         SpriteRenderer playerSpriteRenderer = player.GetComponent<SpriteRenderer>();
         Color originalColor = playerSpriteRenderer.color;

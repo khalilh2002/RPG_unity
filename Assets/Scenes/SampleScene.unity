@@ -4770,6 +4770,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5023408590105110958, guid: bd16fef3ed77b614bb7063cdb5e9334f, type: 3}
+      propertyPath: followSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5023408590105110958, guid: bd16fef3ed77b614bb7063cdb5e9334f, type: 3}
+      propertyPath: detectionDistance
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5023408590105110958, guid: bd16fef3ed77b614bb7063cdb5e9334f, type: 3}
       propertyPath: knockbackDistance
       value: 3
       objectReference: {fileID: 0}
