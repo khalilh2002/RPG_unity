@@ -1037,6 +1037,7 @@ MonoBehaviour:
   roomFirstMapGenerator: {fileID: 996361052}
   speed: 25
   player: {fileID: 792160106}
+  avoidRadius: 4
 --- !u!1 &856754632
 GameObject:
   m_ObjectHideFlags: 0
@@ -2374,10 +2375,10 @@ MonoBehaviour:
   tilmapVisulaizer: {fileID: 900231602}
   startPosition: {x: 0, y: 0}
   simpleRandomWalkParametre: {fileID: 11400000, guid: e2552a6f3448e894d9bdf68fcc9b7c25, type: 2}
-  minRoomWidth: 20
-  minRoomHeight: 20
-  mapWidth: 150
-  mapHeight: 150
+  minRoomWidth: 25
+  minRoomHeight: 25
+  mapWidth: 75
+  mapHeight: 75
   offset: 2
 --- !u!4 &996361053
 Transform:
@@ -4779,7 +4780,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5023408590105110958, guid: bd16fef3ed77b614bb7063cdb5e9334f, type: 3}
       propertyPath: knockbackDistance
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5023408590105110958, guid: bd16fef3ed77b614bb7063cdb5e9334f, type: 3}
       propertyPath: knockbackDuration

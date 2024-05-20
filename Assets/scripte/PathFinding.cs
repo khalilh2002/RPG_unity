@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
+using Unity.Mathematics;
 using UnityEngine;
 using static System.Collections.Specialized.BitVector32;
 using static UnityEngine.RuleTile.TilingRuleOutput;
@@ -12,33 +14,33 @@ public class PathFinding
     private const int MOVE_DIAGONAL_COST = 10;
 
     private Grid<Node> gridPathFinding;
-    private  Vector3 origin = Vector3.zero;
+    private Vector3 origin = Vector3.zero;
 
 
     private List<Node> openList;
     private List<Node> closeList;
 
 
-    public PathFinding(int width , int height )
+    public PathFinding(int width, int height)
     {
-        gridPathFinding = new Grid<Node>(width, height ,2f,origin, (Grid<Node> g, int x, int y) => new Node(g, x, y));
-        
+        gridPathFinding = new Grid<Node>(width, height, 2f, origin, (Grid<Node> g, int x, int y) => new Node(g, x, y));
+
     }
 
-    
-
- 
-
-   
 
 
 
-    public List<Node> FindPath(int startX , int startY , int endX , int endY)
+    public List<Node> FindPath(int startX, int startY, int endX, int endY)
     {
         Node startNode = gridPathFinding.GetGridObject(startX, startY);
         Node endNode = gridPathFinding.GetGridObject(endX, endY);
+        if (startNode == null || endNode == null)
+        {
+            // Invalid Path
+            return null;
+        }
 
-        openList = new List<Node> { startNode};
+        openList = new List<Node> { startNode };
         closeList = new List<Node>();
 
         for (int x = 0; x < gridPathFinding.GetWidth(); x++)
@@ -47,20 +49,20 @@ public class PathFinding
             {
                 Node pathNode = gridPathFinding.GetGridObject(x, y);
 
-                if (pathNode==null)
+                if (pathNode == null)
                 {
-                    Debug.Log(" you path Node null 789 x = "+x+" y = "+y );
+                    Debug.Log(" you path Node null 789 x = " + x + " y = " + y);
                 }
-                pathNode.gCost= int.MaxValue;
+                pathNode.gCost = int.MaxValue;
                 pathNode.CalculateFCost();
                 pathNode.cameFromNode = null;
             }
         }
         startNode.gCost = 0;
-        startNode.hCost = CalculateDistanceCost(startNode ,endNode) ;
+        startNode.hCost = CalculateDistanceCost(startNode, endNode);
         startNode.CalculateFCost();
 
-        while (openList.Count  > 0)
+        while (openList.Count > 0)
         {
             Node currentNode = GetLowestFCost(openList);
             if (currentNode == endNode)
@@ -73,7 +75,7 @@ public class PathFinding
             closeList.Add(currentNode);
             foreach (Node node in GetNeighbourList(currentNode))
             {
-                if ( closeList.Contains(node) )
+                if (closeList.Contains(node))
                 {
                     continue;
                 }
@@ -82,7 +84,7 @@ public class PathFinding
                     closeList.Add(node);
                     continue;
                 }
-                int tentativeGCost = currentNode.gCost + CalculateDistanceCost(currentNode , node);
+                int tentativeGCost = currentNode.gCost + CalculateDistanceCost(currentNode, node);
                 if (tentativeGCost < node.gCost)
                 {
                     node.cameFromNode = currentNode;
@@ -105,11 +107,11 @@ public class PathFinding
 
     private List<Node> GetNeighbourList(Node currentNode)
     {
-        List<Node> neighbourList = new List<Node> ();
-        if (currentNode.X -1 >=0)
+        List<Node> neighbourList = new List<Node>();
+        if (currentNode.X - 1 >= 0)
         {
             //left
-            neighbourList.Add(GetNode(currentNode.X - 1, currentNode.Y ));
+            neighbourList.Add(GetNode(currentNode.X - 1, currentNode.Y));
             //if (currentNode.Y - 1 >= 0)
             //{
             //    //down left
@@ -128,28 +130,16 @@ public class PathFinding
         {
             //right
             neighbourList.Add(GetNode(currentNode.X + 1, currentNode.Y));
-            //if (currentNode.Y - 1 >= 0)
-            //{
-            //    //down left
-            //    neighbourList.Add(GetNode(currentNode.X + 1, currentNode.Y - 1));
-
-            //}
-            //if (currentNode.Y + 1 < gridPathFinding.GetHeight())
-            //{
-            //    //down up
-            //    neighbourList.Add(GetNode(currentNode.X + 1, currentNode.Y + 1));
-
-            //}
 
         }
 
         if (currentNode.Y + 1 < gridPathFinding.GetHeight())
         {
             //down up
-            neighbourList.Add(GetNode(currentNode.X , currentNode.Y + 1));
+            neighbourList.Add(GetNode(currentNode.X, currentNode.Y + 1));
 
         }
-        if (currentNode.Y - 1  >= 0)
+        if (currentNode.Y - 1 >= 0)
         {
             //down up
             neighbourList.Add(GetNode(currentNode.X, currentNode.Y - 1));
@@ -161,7 +151,7 @@ public class PathFinding
 
 
 
-    
+
 
     private List<Node> CalculatePath(Node endNode)
     {
@@ -190,7 +180,7 @@ public class PathFinding
         Node lowestFCost = pathNodeList[0];
         for (int i = 0; i < pathNodeList.Count; i++)
         {
-            if (pathNodeList[i].fCost < lowestFCost.fCost )
+            if (pathNodeList[i].fCost < lowestFCost.fCost)
             {
                 lowestFCost = pathNodeList[i];
             }
@@ -199,12 +189,12 @@ public class PathFinding
     }
 
 
-    private int CalculateDistanceCost(Node a , Node b)
+    private int CalculateDistanceCost(Node a, Node b)
     {
         int xDistance = Mathf.Abs(a.X - b.X);
         int yDistance = Mathf.Abs(a.Y - b.Y);
 
-        int remaining = Mathf.Abs(xDistance-yDistance) ;
+        int remaining = Mathf.Abs(xDistance - yDistance);
 
         int res = MOVE_DIAGONAL_COST * Mathf.Min(xDistance, yDistance) * MOVE_STRAIGHT_COST * remaining;
         return res;
@@ -217,6 +207,32 @@ public class PathFinding
     }
 
 
+    //public void createWalkabelGrid(List<GameObject> listObj , HashSet<Vector2Int> floor)
+    //{
+    //    foreach (GameObject obj in listObj)
+    //    {
+    //        Vector2Int objV = new Vector2Int((int)obj.transform.position.x, (int)obj.transform.position.y);
+    //        for (int x = 0; x < gridPathFinding.GetWidth(); x++)
+    //        {
+    //            for (int y = 0; y < gridPathFinding.GetHeight(); y++)
+    //            {
+    //                Vector2Int xitem = new Vector2Int((int)gridPathFinding.getWorldPosition(x, y).x, (int));
+
+    //                if (!floor.Contains(xitem))
+    //                {
+    //                    continue;
+    //                }
+    //                if (Vector2Int.Distance(xitem,objV)<0.1f)
+    //                {
+    //                    GetNode(x,y).setIsWalkable(false);
+    //                }
+
+    //            }
+    //        }
+
+    //    }
+    //}
+
     public void createWalkabelGrid(HashSet<Vector2Int> floor)
     {
         for (int x = 0; x < gridPathFinding.GetWidth(); x++)
@@ -227,24 +243,20 @@ public class PathFinding
                 if (floor == null)
                 {
                     Debug.Log("value is null 1254");
-                
-                }else if (WallGenerator.wallsPositions.Contains(xitem))
+
+                }
+                if (WallGenerator.wallsPositions.Contains(xitem))
                 {
                     GetNode(x, y).setIsWalkable(false);
 
                 }
                 else if (floor.Contains(xitem))
                 {
-                    //CreateWorldText(gridArray[x, y].ToString(), null, getWorldPosition(x, y), 20, Color.green, TextAnchor.MiddleCenter).tag = "gridCell";
-                    //Debug.DrawLine(getWorldPosition(x, y), getWorldPosition(x + 1, y), UnityEngine.Color.white, 100f);
-                    //Debug.DrawLine(getWorldPosition(x, y), getWorldPosition(x, y + 1), UnityEngine.Color.white, 100f);
+
                     GetNode(x, y).setIsWalkable(true);
                 }
                 else
                 {
-                    //CreateWorldText(gridArray[x, y].ToString(), null, getWorldPosition(x, y), 20, Color.red, TextAnchor.MiddleCenter).tag = "gridCell";
-                    //Debug.DrawLine(getWorldPosition(x, y), getWorldPosition(x + 1, y), UnityEngine.Color.blue, 100f);
-                    //Debug.DrawLine(getWorldPosition(x, y), getWorldPosition(x, y + 1), UnityEngine.Color.blue, 100f);
 
                     GetNode(x, y).setIsWalkable(false);
 
@@ -252,6 +264,10 @@ public class PathFinding
 
             }
         }
+        
     }
+
+
+
 
 }

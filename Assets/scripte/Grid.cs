@@ -18,6 +18,8 @@ public class Grid<GridOject>
     private GridOject[,] gridArray;
     Vector3 origin;
 
+    public GridOject[,] GridArray { get => gridArray;  }
+
     public Grid(int width, int height, float cellSize , Vector3 origin, Func<Grid<GridOject>, int, int, GridOject> createGridObject)
     {
         this.origin = origin;
@@ -56,14 +58,14 @@ public class Grid<GridOject>
                 else if (floor.Contains(xitem))
                 {
                     //CreateWorldText(gridArray[x, y].ToString(), null, getWorldPosition(x, y), 20, Color.green, TextAnchor.MiddleCenter).tag = "gridCell";
-                    Debug.DrawLine(getWorldPosition(x, y), getWorldPosition(x + 1, y), UnityEngine.Color.white, 100f);
-                    Debug.DrawLine(getWorldPosition(x, y), getWorldPosition(x, y + 1), UnityEngine.Color.white, 100f);
+                    Debug.DrawLine(getWorldPosition(x, y), getWorldPosition(x + (int)cellSize, y), UnityEngine.Color.white, 1f);
+                    Debug.DrawLine(getWorldPosition(x, y), getWorldPosition(x, y + (int)cellSize), UnityEngine.Color.white, 1f);
                 }
                 else
                 {
                     //CreateWorldText(gridArray[x, y].ToString(), null, getWorldPosition(x, y), 20, Color.red, TextAnchor.MiddleCenter).tag = "gridCell";
-                    Debug.DrawLine(getWorldPosition(x, y), getWorldPosition(x + 1, y), UnityEngine.Color.blue, 100f);
-                    Debug.DrawLine(getWorldPosition(x, y), getWorldPosition(x, y + 1), UnityEngine.Color.blue, 100f);
+                    Debug.DrawLine(getWorldPosition(x, y), getWorldPosition(x + 1, y), UnityEngine.Color.blue, 1f);
+                    Debug.DrawLine(getWorldPosition(x, y), getWorldPosition(x, y + 1), UnityEngine.Color.blue, 1f);
                 }
 
             }

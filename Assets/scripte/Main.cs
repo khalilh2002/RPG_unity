@@ -17,29 +17,50 @@ public class Main : MonoBehaviour
 
     private int coins = 0;
     private int enemiesKilled = 0;
-    private int maxHealth = 5;
+    private int maxHealth = 1000;
     public int currentHealth;
+
+     const int minEnemies = 0;
+     const int maxEnemies = 5;
+
+
 
     Vector3 maxRoom = default;
     double maxDistance = default;
     private Rigidbody2D rb;
     public GameObject originalCoin; // Store the original coin prefab
     public GameObject originalEnemy; // Store the original enemy prefab
-     CoinCollector coinCollector; // Reference to the CoinCollector script
-     public SpriteRenderer playerSpriteRenderer; // Reference to the player's SpriteRenderer
+    CoinCollector coinCollector; // Reference to the CoinCollector script
+    public SpriteRenderer playerSpriteRenderer; // Reference to the player's SpriteRenderer
 
-     // Dictionary to track if coins are collected in each room
+    // Dictionary to track if coins are collected in each room
     Dictionary<BoundsInt, bool> roomCoinsCollected = new Dictionary<BoundsInt, bool>();
+
+
+    void runStart()
+    {
+        obj.runRoomFirstMapGeneratorClass();
+        // Set initial positions
+        var FirstRoom = RoomFirstMapGenerator.FirstRoom;
+        player.transform.position = new Vector3(FirstRoom.center.x, FirstRoom.center.y, FirstRoom.center.z);
+
+        Dictionary<BoundsInt, double> djikstra_player = obj.graph_main.Dijkstra(FirstRoom);
+
+
+        BoundsInt maxR = max_distance_room(djikstra_player);
+        boss.transform.position = maxR.center;
+
+
+    }
 
     void Start()
     {
-        obj.runRoomFirstMapGeneratorClass();
-
+        runStart();
         // Store the original coin and enemy prefab
         rb = GetComponent<Rigidbody2D>();
         originalCoin = coinPrefab;
         originalEnemy = enemyPrefab;
-         currentHealth = maxHealth;
+        currentHealth = maxHealth;
         UpdateUI();
 
 
@@ -54,34 +75,23 @@ public class Main : MonoBehaviour
             int numberOfCoins = CalculateNumberOfCoins(distance, maxDistance);
             int numberOfEnemies = CalculateNumberOfEnemies(distance, maxDistance);
 
+            
             // Spawn coins and enemies
-            SpawnCoinsAndEnemiesRandomlyInRoom(roomBounds, numberOfCoins, numberOfEnemies);
+            SpawnCoinsAndEnemiesRandomlyInRoom(roomBounds, numberOfCoins, numberOfEnemies*3);
             // Mark coins as not collected initially
             roomCoinsCollected[roomBounds] = false;
         }
 
-        // Set initial positions
-        var FirstRoom = RoomFirstMapGenerator.FirstRoom;
-        player.transform.position = new Vector3(FirstRoom.center.x, FirstRoom.center.y, FirstRoom.center.z);
 
-        // Dictionary<BoundsInt, double> djikstra_player = RoomFirstMapGenerator.djikstra_result;
-        // Dictionary<BoundsInt, double> valueBoss = max_distance(djikstra_player, ref maxRoom, ref maxDistance);
-        // boss.transform.position = maxRoom;
-        Dictionary<BoundsInt, double> djikstra_player = obj.graph_main.Dijkstra(FirstRoom);
 
-        //Dictionary<BoundsInt, double> valueBoss = max_distance(djikstra_player, ref maxRoom, ref maxDistance);
-
-        BoundsInt maxR = max_distance_room(djikstra_player);
-        boss.transform.position = maxR.center;
-
-         // Get the CoinCollector script
+        // Get the CoinCollector script
         coinCollector = GameObject.FindObjectOfType<CoinCollector>();
 
         // Disable automatic collection at start
-    if (coinCollector != null)
-    {
-        coinCollector.DeactivateAutomaticCollection(); // Add this line
-    }
+        if (coinCollector != null)
+        {
+            coinCollector.DeactivateAutomaticCollection(); // Add this line
+        }
     }
 
     void UpdateUI()
@@ -91,11 +101,11 @@ public class Main : MonoBehaviour
         healthBar.text = "Health: " + currentHealth.ToString();
     }
 
- public void ApplyKnockback(Vector2 direction, float force)
+    public void ApplyKnockback(Vector2 direction, float force)
     {
         rb.AddForce(direction * force, ForceMode2D.Impulse);
     }
-     public void CollectCoin()
+    public void CollectCoin()
     {
         coins++;
         UpdateUI();
@@ -110,58 +120,47 @@ public class Main : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        
+
         UpdateUI();
     }
 
-   
+
 
     void Update()
     {
         if (Input.GetKey(KeyCode.Y) || (currentHealth <= 0))
         {
-            obj.runRoomFirstMapGeneratorClass();
-            var FirstRoom = RoomFirstMapGenerator.FirstRoom;
-            player.transform.position = new Vector3(FirstRoom.center.x, FirstRoom.center.y, FirstRoom.center.z);
-
-            //Dictionary<BoundsInt, double> djikstra_player = RoomFirstMapGenerator.djikstra_result;
-            //Dictionary<BoundsInt, double> valueBoss = max_distance(djikstra_player, ref maxRoom, ref maxDistance);
-            //boss.transform.position = maxRoom;
-
-            Dictionary<BoundsInt, double> djikstra_player = obj.graph_main.Dijkstra(FirstRoom);
-
-            BoundsInt maxR = max_distance_room(djikstra_player);
-
-            boss.transform.position = maxR.center;
+            runStart();
             coins = 0;
             enemiesKilled = 0;
             currentHealth = maxHealth;
             playerSpriteRenderer.color = Color.white;
-            
-            
+
+
             UpdateUI();
+            Dictionary<BoundsInt, double> djikstra_player = obj.graph_main.Dijkstra(RoomFirstMapGenerator.FirstRoom);
 
             AdjustCoinsAndEnemiesBasedOnDistance(djikstra_player);
 
             if (coinCollector != null)
-    {
-        coinCollector.DeactivateAutomaticCollection(); // Add this line
-    }
+            {
+                coinCollector.DeactivateAutomaticCollection(); // Add this line
+            }
 
             // Activate or deactivate CoinCollector based on coins collected in the current room
-        BoundsInt currentRoomBounds = GetCurrentRoomBounds();
-        if (coinCollector != null && roomCoinsCollected.ContainsKey(currentRoomBounds))
-        {
-            bool coinsCollected = roomCoinsCollected[currentRoomBounds];
-            if (coinsCollected)
+            BoundsInt currentRoomBounds = GetCurrentRoomBounds();
+            if (coinCollector != null && roomCoinsCollected.ContainsKey(currentRoomBounds))
             {
-                coinCollector.DeactivateAutomaticCollection();
+                bool coinsCollected = roomCoinsCollected[currentRoomBounds];
+                if (coinsCollected)
+                {
+                    coinCollector.DeactivateAutomaticCollection();
+                }
+                else
+                {
+                    coinCollector.OnCoinsGenerated(originalCoin);
+                }
             }
-            else
-            {
-                coinCollector.OnCoinsGenerated(originalCoin);
-            }
-        }
         }
     }
 
@@ -207,7 +206,7 @@ public class Main : MonoBehaviour
 
     void SpawnCoinsAndEnemiesRandomlyInRoom(BoundsInt roomBounds, int numberOfCoins, int numberOfEnemies)
     {
-         // Skip if it's the boss room
+        // Skip if it's the boss room
         if (roomBounds.center == maxRoom) return;
         int minX = roomBounds.xMin + (RoomFirstMapGenerator.offsetvar + 1);
         int maxX = roomBounds.xMax - (RoomFirstMapGenerator.offsetvar + 1);
@@ -246,8 +245,7 @@ public class Main : MonoBehaviour
     int CalculateNumberOfEnemies(double distance, double maxDistance)
     {
         float t = (float)(distance / maxDistance);
-        int minEnemies = 0;
-        int maxEnemies = 5;
+        
         return Mathf.RoundToInt(Mathf.Lerp(minEnemies, maxEnemies, t));
     }
 
@@ -269,32 +267,10 @@ public class Main : MonoBehaviour
         return maxDistance;
     }
 
-    //Dictionary<BoundsInt, double> max_distance(Dictionary<BoundsInt, double> distances, ref Vector3 x, ref double y)
-    //{
-    //    double maxValue = double.NegativeInfinity;
-    //    BoundsInt maxBoundsInt = default;
-
-    //    foreach (var item in distances)
-    //    {
-    //        if (item.Value > maxValue)
-    //        {
-    //            maxValue = item.Value;
-    //            maxBoundsInt = item.Key;
-    //        }
-    //    }
-
-    //    x = maxBoundsInt.center;
-    //    y = maxValue;
-
-    //    Dictionary<BoundsInt, double> maxDict = new Dictionary<BoundsInt, double>();
-    //    maxDict[maxBoundsInt] = maxValue;
-
-    //    return maxDict;
-    //}
     BoundsInt max_distance_room(Dictionary<BoundsInt, double> distances)
     {
         double maxValue = double.NegativeInfinity;
-        BoundsInt maxBoundsInt = default ;
+        BoundsInt maxBoundsInt = default;
 
         foreach (var item in distances)
         {
@@ -303,7 +279,7 @@ public class Main : MonoBehaviour
                 maxValue = item.Value;
                 maxBoundsInt = item.Key;
             }
-        }        
+        }
 
         return maxBoundsInt;
     }

@@ -10,6 +10,15 @@ public class AutoMoveAwayFromEnemy : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private playerMovement playerMovementScript;
 
+
+
+
+
+    
+
+  
+
+
     void Start()
     {
         moveAwayEnabled = false; // Set to false by default

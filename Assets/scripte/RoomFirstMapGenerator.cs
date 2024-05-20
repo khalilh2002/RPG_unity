@@ -16,9 +16,12 @@ public class RoomFirstMapGenerator : simpleWalkMapGenerator
     public static Dictionary<BoundsInt, double> djikstra_result ;
     static public int offsetvar;
 
+   
 
     private HashSet<Vector2Int> floor;
-    public HashSet<Vector2Int> getFloor { get => floor;}
+    public  HashSet<Vector2Int> getFloor() {
+        return new HashSet<Vector2Int>(floor);
+    }
 
     //addede for djikstra
     public Graph graph_main = new Graph();
@@ -114,49 +117,51 @@ public class RoomFirstMapGenerator : simpleWalkMapGenerator
     }
 
     //need to triple the corridor
-    
-     private HashSet<Vector2Int> CreateCorridor(Vector2Int currentRoomCenter, Vector2Int destination)
+
+    private HashSet<Vector2Int> CreateCorridor(Vector2Int currentRoomCenter, Vector2Int destination)
     {
         HashSet<Vector2Int> corridor = new HashSet<Vector2Int>();
-        var postion = currentRoomCenter; //start point;
-        corridor.Add(postion);
-        while (postion.y != destination.y)
+        Vector2Int position = currentRoomCenter; // Start point
+        corridor.Add(position);
+
+        while (position.y != destination.y)
         {
-            if (postion.y > destination.y)
+            if (position.y > destination.y)
             {
-                postion += Vector2Int.down;
-            }else{
-                postion += Vector2Int.up;
+                position += Vector2Int.down;
             }
-            
-            corridor.Add(postion);
-            corridor.Add(postion+Vector2Int.left);
-            corridor.Add(postion+Vector2Int.right);
+            else
+            {
+                position += Vector2Int.up;
+            }
 
-            corridor.Add(postion + Vector2Int.left + Vector2Int.left);
-            corridor.Add(postion + Vector2Int.right + Vector2Int.right);
+            for (int i = -3; i <= 3; i++) // Changed from -2 and 2 to -3 and 3
+            {
+                corridor.Add(position + new Vector2Int(i, 0));
+            }
         }
-        while (postion.x != destination.x)
+
+        while (position.x != destination.x)
         {
-            if (postion.x > destination.x)
+            if (position.x > destination.x)
             {
-                postion += Vector2Int.left;
-            }else{
-                postion += Vector2Int.right;
+                position += Vector2Int.left;
             }
-            corridor.Add(postion);
+            else
+            {
+                position += Vector2Int.right;
+            }
 
-            corridor.Add(postion + Vector2Int.up);
-            corridor.Add(postion + Vector2Int.down);
-
-            corridor.Add(postion + Vector2Int.up + Vector2Int.up);
-            corridor.Add(postion + Vector2Int.down + Vector2Int.down);
-
+            for (int i = -3; i <= 3; i++) // Changed from -2 and 2 to -3 and 3
+            {
+                corridor.Add(position + new Vector2Int(0, i));
+            }
         }
-    
+
         return corridor;
     }
-  
+
+
 
 
 
