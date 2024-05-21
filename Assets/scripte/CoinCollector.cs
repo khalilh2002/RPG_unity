@@ -51,7 +51,7 @@ public class CoinCollector : MonoBehaviour
             MoveToNextCoin();
 
             // Update player animations
-            //UpdatePlayerAnimations();
+            UpdatePlayerAnimations();
         }
     }
 
@@ -194,36 +194,36 @@ Vector3 RoundDirection(Vector3 direction)
             Debug.Log("Coin removed. Remaining coins: " + coins.Count);
         }
     }
-//  void UpdatePlayerAnimations()
-// {
-//     // Get the position of the player and the coin
-//     Vector3 playerPos = player.position;
-//     Vector3 coinPos = coins[currentCoinIndex].position;
+ void UpdatePlayerAnimations()
+{
+    // Get the position of the player and the coin
+    Vector3 playerPos = player.position;
+    Vector3 coinPos = coins[currentCoinIndex].position;
 
-//     // Determine animation parameters based on movement direction
-//     bool isRunning = Mathf.Abs(playerPos.x - coinPos.x) > 0;
+    // Determine animation parameters based on movement direction
+    bool isRunning = Mathf.Abs(playerPos.x - coinPos.x) > 0;
 
-//     // Set animator parameters
-//     playerMovementScript.animator.SetBool("IsRunning", isRunning);
+    // Set animator parameters
+    playerMovementScript.animator.SetBool("IsRunning", isRunning);
 
-//     // Set sprite flip and offset based on horizontal position
-//     if (playerPos.x < coinPos.x)
-//     {
-//         // Player should move right
-//         playerMovementScript.spriteRenderer.flipX = false;
-//         playerMovementScript.offset = playerMovementScript.rightOffset;
-//     }
-//     else if (playerPos.x > coinPos.x)
-//     {
-//         // Player should move left
-//         playerMovementScript.spriteRenderer.flipX = false;
-//         playerMovementScript.offset = playerMovementScript.leftOffset;
-//     }
+    // Set sprite flip and offset based on horizontal position
+    if (playerPos.x < coinPos.x)
+    {
+        // Player should move right
+        playerMovementScript.spriteRenderer.flipX = false;
+        playerMovementScript.offset = playerMovementScript.rightOffset;
+    }
+    else if (playerPos.x > coinPos.x)
+    {
+        // Player should move left
+        playerMovementScript.spriteRenderer.flipX = false;
+        playerMovementScript.offset = playerMovementScript.leftOffset;
+    }
     
 
 
 
-// }
+}
 }
      
 

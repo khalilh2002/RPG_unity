@@ -13,8 +13,6 @@ TagManager:
   - gridCell
   - Hitbox
   - UI
-  - RedSlime
-  - GreenSlime
   layers:
   - Default
   - TransparentFX
@@ -26,7 +24,7 @@ TagManager:
   - Coin
   - Enemy
   - Player
-  - MiniMap
+  - 
   - 
   - 
   - 

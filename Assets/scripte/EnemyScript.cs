@@ -4,14 +4,14 @@ using UnityEngine;
 public class EnemyScript : MonoBehaviour
 {
     public int damage = 1;
-    public float knockbackDistance = 1f; // Adjust this value as needed
-    public float knockbackDuration = 0.1f; // Adjust this value as needed
+    public float knockbackDistance =0f; // Adjust this value as needed
+    public float knockbackDuration = 0f; // Adjust this value as needed
     public float flashDuration = 0.1f;
     public Color flashColor = Color.red;
     public LayerMask obstacleLayer; // Set this layer mask to the layer where your walls are placed
     public float detectionDistance = 5f; // Distance at which the enemy starts following the player
-    public float jumpForce = 5f; // Force applied when the enemy jumps
-    public float jumpCooldown = 1f; // Time between jumps
+    public float jumpForce = 2f; // Force applied when the enemy jumps
+    public float jumpCooldown = 1.5f; // Time between jumps
 
     private Main player;
     private bool hasHitPlayer = false;
