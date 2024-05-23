@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3462954281482561671
+--- !u!1 &1188713376319186389
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,41 +8,40 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7164318690658069674}
-  - component: {fileID: 5836883376058611638}
-  - component: {fileID: 6525482503081545167}
-  - component: {fileID: 4243552816932083469}
-  - component: {fileID: 2137699260910619113}
-  - component: {fileID: 5731879236499333988}
-  m_Layer: 0
-  m_Name: GreenSlime 1
-  m_TagString: GreenSlime
+  - component: {fileID: 423629335698582611}
+  - component: {fileID: 1111688756057072445}
+  - component: {fileID: 1205359640984725317}
+  - component: {fileID: 6366725965675800931}
+  - component: {fileID: -405396561463510844}
+  m_Layer: 8
+  m_Name: SlimeBall
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7164318690658069674
+--- !u!4 &423629335698582611
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3462954281482561671}
+  m_GameObject: {fileID: 1188713376319186389}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 541.26733, y: 176.29086, z: -2.5204537}
-  m_LocalScale: {x: 1.1768, y: 1.1768, z: 1.1768}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &5836883376058611638
+--- !u!212 &1111688756057072445
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3462954281482561671}
+  m_GameObject: {fileID: 1188713376319186389}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -77,28 +76,47 @@ SpriteRenderer:
   m_SortingLayerID: 956069355
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1865772829, guid: e7dbbca028810c846ab9331fa2d134f5, type: 3}
-  m_Color: {r: 0.20856555, g: 0.990566, b: 0.07008721, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 27a8667d6cbdd9e4f9bcca844cbdec4f, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.33333334, y: 0.25}
+  m_Size: {x: 1.7066667, y: 1.7066667}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &6525482503081545167
+--- !u!114 &1205359640984725317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1188713376319186389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6be4666a2839a6b4281b80fbefb36b54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
+  target: {fileID: 9117132486046697719, guid: 976e3734c2173c04a97b4c7d24ec28d8, type: 3}
+  speed: 2
+  explodeAfterSeconds: 5
+  explosionEffect: {fileID: 3680227544509518493, guid: 37de395aaa2bdda4384a7708757b073d, type: 3}
+  flashDuration: 0.1
+  flashColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!95 &6366725965675800931
 Animator:
   serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3462954281482561671}
+  m_GameObject: {fileID: 1188713376319186389}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 59cbcb316b561c84798ed0a211d65714, type: 2}
+  m_Controller: {fileID: 9100000, guid: 0751e3e0dfefc44438d68de31282a5f3, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -109,40 +127,13 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!50 &4243552816932083469
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3462954281482561671}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 4
---- !u!61 &2137699260910619113
+--- !u!61 &-405396561463510844
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3462954281482561671}
+  m_GameObject: {fileID: 1188713376319186389}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -165,41 +156,19 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.010925293, y: -0.04323578}
+  m_Offset: {x: -0.016642272, y: 0.02496332}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2, y: 1.5}
-    newSize: {x: 0.33333334, y: 0.25}
+    oldSize: {x: 1.7066667, y: 1.7066667}
+    newSize: {x: 1.7066667, y: 1.7066667}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.9425049, y: 1.4100952}
+  m_Size: {x: 0.94112504, y: 0.9577671}
   m_EdgeRadius: 0
---- !u!114 &5731879236499333988
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3462954281482561671}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70c06901225b51a46aa9ab23fc8ed55f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 1
-  knockbackDistance: 3
-  knockbackDuration: 0
-  flashDuration: 0.1
-  flashColor: {r: 1, g: 0, b: 0, a: 1}
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  jumpForce: 2
-  jumpCooldown: 1.5
