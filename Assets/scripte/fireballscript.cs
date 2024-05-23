@@ -38,11 +38,40 @@ private Main player;
             
             // Destroy the specific enemy instance that was hit
             Destroy(other.gameObject);
+
+            player.EnemyKilled();
             // Create an explosion effect
             Instantiate(explosionPrefab, transform.position, Quaternion.identity);
 
             // Destroy the fireball
             Destroy(gameObject);
         }
+         if (other.CompareTag("GreenSlime"))
+        {
+            
+            // Destroy the specific enemy instance that was hit
+            Destroy(other.gameObject);
+
+            player.EnemyKilled();
+            // Create an explosion effect
+            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+
+            // Destroy the fireball
+            Destroy(gameObject);
+        }
+         if (other.CompareTag("RedSlime"))
+        {
+            
+            // Destroy the specific enemy instance that was hit
+            Destroy(other.gameObject);
+
+            player.EnemyKilled();
+            // Create an explosion effect
+            Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+
+            // Destroy the fireball
+            Destroy(gameObject);
+        }
+        
     }
 }

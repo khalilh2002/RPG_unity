@@ -36,5 +36,25 @@ public class Tornado : MonoBehaviour
             // Destroy the specific enemy instance that was hit
             Destroy(other.gameObject);
         }
+         if (other.CompareTag("GreenSlime"))
+        {
+            player.EnemyKilled();
+            // Destroy the specific enemy instance that was hit
+            Destroy(other.gameObject);
+        }
+         if (other.CompareTag("GreenSlime"))
+        {
+            player.EnemyKilled();
+            // Destroy the specific enemy instance that was hit
+            Destroy(other.gameObject);
+        }
+         if (other.CompareTag("RedSlime"))
+        {
+            player.EnemyKilled();
+            // Destroy the specific enemy instance that was hit
+            Destroy(other.gameObject);
+        }
     }
-}
+    
+    }
+

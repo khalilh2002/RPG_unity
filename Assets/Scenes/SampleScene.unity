@@ -881,6 +881,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GreenSlime
       objectReference: {fileID: 0}
+    - target: {fileID: 5731879236499333988, guid: 4aa0b74e015d6dc45b2b93cea769669e, type: 3}
+      propertyPath: knockbackForce
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 7164318690658069674, guid: 4aa0b74e015d6dc45b2b93cea769669e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1201.29
@@ -1485,6 +1489,9 @@ MonoBehaviour:
   flameSwordPrefab: {fileID: 771855137}
   originalCoin: {fileID: 28621142}
   originalEnemy: {fileID: 470256924896700669, guid: bd16fef3ed77b614bb7063cdb5e9334f, type: 3}
+  wind: {fileID: 0}
+  fire: {fileID: 0}
+  thunder: {fileID: 0}
   originalRedSlime: {fileID: 376947158}
   originalGreenSlime: {fileID: 397820942}
   playerSpriteRenderer: {fileID: 792160105}

@@ -34,6 +34,11 @@ public class Main : MonoBehaviour
     public GameObject originalCoin; // Store the original coin prefab
     public GameObject originalEnemy; // Store the original enemy prefab
 
+    public GameObject wind;
+    public GameObject fire;
+    public GameObject thunder;
+
+
     public GameObject originalRedSlime;
     public GameObject originalGreenSlime;
     CoinCollector coinCollector; // Reference to the CoinCollector script
@@ -50,6 +55,9 @@ public class Main : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         originalCoin = coinPrefab;
         originalEnemy = enemyPrefab;
+        wind = windSwordPrefab;
+        fire = flameSwordPrefab;
+        thunder = thunderSwordPrefab;
          originalRedSlime = GameObject.FindGameObjectWithTag("RedSlime");
         originalGreenSlime = GameObject.FindGameObjectWithTag("GreenSlime");
         currentHealth = maxHealth;
@@ -108,7 +116,8 @@ public class Main : MonoBehaviour
 
     public void ApplyKnockback(Vector2 direction, float force)
     {
-        rb.AddForce(direction * force, ForceMode2D.Impulse);
+        rb.velocity = Vector2.zero; // Reset the player's velocity before applying the knockback
+    rb.AddForce(direction * force, ForceMode2D.Impulse);
     }
     public void CollectCoin()
     {
@@ -210,6 +219,7 @@ public class Main : MonoBehaviour
         GameObject[] existingEnemies = GameObject.FindGameObjectsWithTag("Enemy");
         GameObject[] existingReds = GameObject.FindGameObjectsWithTag("RedSlime");
         GameObject[] existingGreens = GameObject.FindGameObjectsWithTag("GreenSlime");
+     
 
         // Destroy all existing coins and enemies except the original ones
         foreach (GameObject coin in existingCoins)
@@ -396,10 +406,16 @@ public class Main : MonoBehaviour
     }
    void PlaceSwordsRandomly()
 {
+    // Clear the swords list to avoid adding duplicate swords
+    swords.Clear();
+    
     // Add the swords to the list
     swords.Add(windSwordPrefab);
     swords.Add(thunderSwordPrefab);
     swords.Add(flameSwordPrefab);
+
+    // Remove existing swords from the scene
+    RemoveExistingSwords();
 
     List<BoundsInt> availableRooms = new List<BoundsInt>(RoomFirstMapGenerator.listRoomOrigin);
 
@@ -424,14 +440,26 @@ public class Main : MonoBehaviour
 
         // Get a random position within the room
         Vector3 randomPosition = new Vector3(
-            Random.Range(randomRoom.xMin+(RoomFirstMapGenerator.offsetvar + 1), randomRoom.xMax-(RoomFirstMapGenerator.offsetvar + 1)),
-            Random.Range(randomRoom.yMin+(RoomFirstMapGenerator.offsetvar + 1), randomRoom.yMax-(RoomFirstMapGenerator.offsetvar + 1)),
+            Random.Range(randomRoom.xMin + (RoomFirstMapGenerator.offsetvar + 1), randomRoom.xMax - (RoomFirstMapGenerator.offsetvar + 1)),
+            Random.Range(randomRoom.yMin + (RoomFirstMapGenerator.offsetvar + 1), randomRoom.yMax - (RoomFirstMapGenerator.offsetvar + 1)),
             0);
 
         // Instantiate the sword at the random position
         Instantiate(sword, randomPosition, Quaternion.identity);
     }
 }
+void RemoveExistingSwords()
+{
+    GameObject[] existingWeapons = GameObject.FindGameObjectsWithTag("Weapon");
+
+    foreach (GameObject sword in existingWeapons)
+    {
+        if (sword != wind && sword != fire && sword != thunder)
+        {
+            Destroy(sword);
+        }
+    }
 
 
+}
 }
