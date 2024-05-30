@@ -54,7 +54,7 @@ public class test : MonoBehaviour
             {
                 for (int dy = -2; dy <= 2; dy++)
                 {
-                    Vector2Int tilePos = new Vector2Int( (int)enemy.transform.position.x + dx, (int)enemy.transform.position.y + dy);
+                    Vector2Int tilePos = new Vector2Int((int)enemy.transform.position.x + dx, (int)enemy.transform.position.y + dy);
                     floor.Remove(tilePos);
                 }
             }
@@ -82,7 +82,7 @@ public class test : MonoBehaviour
 
     private void Start()
     {
-        startpFinding();
+        //startpFinding();
 
     }
     void UpdatePathfinding()
@@ -120,7 +120,7 @@ public class test : MonoBehaviour
                     Debug.DrawRay(nodeToV3(path[i]), Vector3.up * 0.2f, Color.blue, 10f);
                 }
             }
-            
+
 
             gridPos = NodetoVector3(path);
             pathfindingIsActive = true;
@@ -132,9 +132,9 @@ public class test : MonoBehaviour
         {
             if (debugVar)
             {
-                 Debug.LogWarning(e.Message);
+                Debug.LogWarning(e.Message);
             }
-               
+
         }
     }
     IEnumerator WaitAndExecute(float seconds)
@@ -249,7 +249,7 @@ public class test : MonoBehaviour
                 }
             }
 
-           
+
         }
         else if (Input.anyKey)
         {
