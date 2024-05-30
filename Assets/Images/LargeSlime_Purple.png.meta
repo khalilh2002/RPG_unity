@@ -1,0 +1,655 @@
+fileFormatVersion: 2
+guid: b77f7782bc8c61e4db39ab02a71b199b
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: LargeSlime_Purple_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1550
+        width: 310
+        height: 310
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a616babf8f8ce64478b956c6c946e28c
+      internalID: -975556787
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LargeSlime_Purple_1
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 1550
+        width: 310
+        height: 310
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bf103989a0d252140a6f6958b95f23f7
+      internalID: 745685574
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LargeSlime_Purple_2
+      rect:
+        serializedVersion: 2
+        x: 620
+        y: 1550
+        width: 310
+        height: 310
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6715be5c7118f554890167ecbd016cce
+      internalID: 524743730
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LargeSlime_Purple_3
+      rect:
+        serializedVersion: 2
+        x: 930
+        y: 1550
+        width: 310
+        height: 310
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 14dc16f6b8ab0c54aa7c6ac14e9b7bd6
+      internalID: -393306576
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LargeSlime_Purple_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1240
+        width: 310
+        height: 310
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7281d3d5f0a8ff44a83337a983039adc
+      internalID: -562725714
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LargeSlime_Purple_5
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 1240
+        width: 310
+        height: 310
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5b201a597f6150c408c0fc7bd5980dea
+      internalID: 1622964459
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LargeSlime_Purple_6
+      rect:
+        serializedVersion: 2
+        x: 620
+        y: 1240
+        width: 310
+        height: 310
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3cbbd6b03140305489513ba52b988510
+      internalID: 1673031934
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LargeSlime_Purple_7
+      rect:
+        serializedVersion: 2
+        x: 930
+        y: 1240
+        width: 310
+        height: 310
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 06fd5e6fd916274489083a8e49f4ca98
+      internalID: 254175321
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LargeSlime_Purple_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 930
+        width: 310
+        height: 310
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 42618990e2fd52d49bfd1f7439e5cffc
+      internalID: 1131871644
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LargeSlime_Purple_9
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 930
+        width: 310
+        height: 310
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d0281b6f7543e8646b3297db141f56bd
+      internalID: 1708421585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LargeSlime_Purple_10
+      rect:
+        serializedVersion: 2
+        x: 620
+        y: 930
+        width: 310
+        height: 310
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 84673a151ae9cae45bb90b7b404edaa1
+      internalID: 1971499588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LargeSlime_Purple_11
+      rect:
+        serializedVersion: 2
+        x: 930
+        y: 930
+        width: 310
+        height: 310
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 58506f522e2adfa439af6028af1cae78
+      internalID: -706480962
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LargeSlime_Purple_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 620
+        width: 310
+        height: 310
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 917d18cb871410b4cb50da4baf87ec8d
+      internalID: -1160079589
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LargeSlime_Purple_13
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 620
+        width: 310
+        height: 310
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 01c564e3155c60b40bc5723dd28a089a
+      internalID: 551989812
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LargeSlime_Purple_14
+      rect:
+        serializedVersion: 2
+        x: 620
+        y: 620
+        width: 310
+        height: 310
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b07734f480d57c4478848f5b5005982d
+      internalID: 1086779817
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LargeSlime_Purple_15
+      rect:
+        serializedVersion: 2
+        x: 930
+        y: 620
+        width: 310
+        height: 310
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f02d12465b8e56b49995a1b3bbc8a754
+      internalID: 2139699584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LargeSlime_Purple_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 310
+        width: 310
+        height: 310
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2e5c8b668da1e3a418a7a86ff314a4ee
+      internalID: 1266429632
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LargeSlime_Purple_17
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 310
+        width: 310
+        height: 310
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 567f752d2aceec04fb70197e5c87ef29
+      internalID: -8842755
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LargeSlime_Purple_18
+      rect:
+        serializedVersion: 2
+        x: 620
+        y: 310
+        width: 310
+        height: 310
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b145dba85e856f247be5d02cf8847062
+      internalID: 1218471822
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LargeSlime_Purple_19
+      rect:
+        serializedVersion: 2
+        x: 930
+        y: 310
+        width: 310
+        height: 310
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f58df12e4361e9145aa75f3e89f393c2
+      internalID: 2029000478
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LargeSlime_Purple_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 310
+        height: 310
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0f848575457c1634c9bb6d1a7b5efdff
+      internalID: 1937062495
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LargeSlime_Purple_21
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 0
+        width: 310
+        height: 310
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fc186e359ce0fd645a0ecd5e609a2bbe
+      internalID: 1240203837
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LargeSlime_Purple_22
+      rect:
+        serializedVersion: 2
+        x: 620
+        y: 0
+        width: 310
+        height: 310
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 72441aa226591504abe0de139dd406fb
+      internalID: 1910141994
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LargeSlime_Purple_23
+      rect:
+        serializedVersion: 2
+        x: 930
+        y: 0
+        width: 310
+        height: 310
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f7b49ff4ee3b4746bbd7ac65676f490
+      internalID: -716176681
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      LargeSlime_Purple_0: -975556787
+      LargeSlime_Purple_1: 745685574
+      LargeSlime_Purple_10: 1971499588
+      LargeSlime_Purple_11: -706480962
+      LargeSlime_Purple_12: -1160079589
+      LargeSlime_Purple_13: 551989812
+      LargeSlime_Purple_14: 1086779817
+      LargeSlime_Purple_15: 2139699584
+      LargeSlime_Purple_16: 1266429632
+      LargeSlime_Purple_17: -8842755
+      LargeSlime_Purple_18: 1218471822
+      LargeSlime_Purple_19: 2029000478
+      LargeSlime_Purple_2: 524743730
+      LargeSlime_Purple_20: 1937062495
+      LargeSlime_Purple_21: 1240203837
+      LargeSlime_Purple_22: 1910141994
+      LargeSlime_Purple_23: -716176681
+      LargeSlime_Purple_3: -393306576
+      LargeSlime_Purple_4: -562725714
+      LargeSlime_Purple_5: 1622964459
+      LargeSlime_Purple_6: 1673031934
+      LargeSlime_Purple_7: 254175321
+      LargeSlime_Purple_8: 1131871644
+      LargeSlime_Purple_9: 1708421585
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

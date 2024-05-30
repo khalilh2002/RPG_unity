@@ -14,6 +14,8 @@ public class Main : MonoBehaviour
     [SerializeField] GameObject greenslimePrefab;
     [SerializeField] GameObject redslimePrefab;
 
+    BossScript bossobj;
+
     public TMP_Text coinText;
     public TMP_Text enemyText;
     public TMP_Text healthBar;
@@ -159,6 +161,7 @@ public class Main : MonoBehaviour
             boss.transform.position = maxR.center;
             coins = 0;
             enemiesKilled = 0;
+            bossobj.maxHealth = 10;
             currentHealth = maxHealth;
             playerSpriteRenderer.color = Color.white;
 
