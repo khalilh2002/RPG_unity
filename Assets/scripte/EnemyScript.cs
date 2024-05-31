@@ -19,6 +19,7 @@ public class EnemyScript : MonoBehaviour
     private Rigidbody2D rb;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
+    
 
     private void Start()
     {
@@ -27,6 +28,7 @@ public class EnemyScript : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        
     }
 
     private void Update()
@@ -83,7 +85,7 @@ public class EnemyScript : MonoBehaviour
         {
             // Get the Main script from the player object
             Main playerHit = other.GetComponentInParent<Main>();
-
+            
             // Check if we successfully got the Main script
             if (playerHit != null)
             {

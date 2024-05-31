@@ -19,6 +19,7 @@ public class RedSlimeScript : MonoBehaviour
     private Rigidbody2D rb;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
+   
 
     private bool isPlayerInRange = false;
 
@@ -30,6 +31,7 @@ public class RedSlimeScript : MonoBehaviour
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         InvokeRepeating("CheckPlayerDistance", 0f, 0.5f);
+        
     }
 
     // Update is called once per frame
@@ -63,6 +65,7 @@ public class RedSlimeScript : MonoBehaviour
         if (other.CompareTag("Hitbox"))
         {
             Main playerHit = other.GetComponentInParent<Main>();
+           
             if (playerHit != null)
             {
                 playerHit.EnemyKilled();

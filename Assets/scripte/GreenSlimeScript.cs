@@ -20,6 +20,7 @@ public class GreenSlimeScript : MonoBehaviour
 
     private int jumpDirection = 1; // 1 for forward, -1 for backward
     private int jumpCount = 0; // Track the number of jumps
+  
 
     private void Start()
     {
@@ -28,6 +29,7 @@ public class GreenSlimeScript : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        
 
         // Start the jumping coroutine
         StartCoroutine(JumpPattern());
@@ -73,6 +75,8 @@ public class GreenSlimeScript : MonoBehaviour
         {
             // Get the Main script from the player object
             Main playerHit = other.GetComponentInParent<Main>();
+
+             
 
             // Check if we successfully got the Main script
             if (playerHit != null)

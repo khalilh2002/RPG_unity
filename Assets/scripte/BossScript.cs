@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BossScript : MonoBehaviour
 {
@@ -12,16 +13,22 @@ public class BossScript : MonoBehaviour
     public float projectileCooldown = 2f;
     private float lastProjectileTime;
     public float attackDistance = 10f; // Minimum distance for the boss to start attacking
+    public float invincibilityDuration = 1f; // Duration of invincibility after getting hit
+    public Color hitColor = Color.yellow; // Color when hit
+    public AudioClip hitSound; // Sound to play when hit
 
     private Animator animator;
     private SpriteRenderer spriteRenderer;
     private Transform player;
+    private bool isInvincible = false;
+    private AudioSource audioSource;
 
     void Start()
     {
         currentHealth = maxHealth;
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        audioSource = GetComponent<AudioSource>();
         player = GameObject.FindGameObjectWithTag("Player").transform; // Ensure your player GameObject has the tag "Player"
     }
 
@@ -44,8 +51,10 @@ public class BossScript : MonoBehaviour
             Main playerHit = other.GetComponentInParent<Main>();
             if (playerHit != null)
             {
-                
-               TakeDamage(1);
+                if (!isInvincible)
+                {
+                    TakeDamage(1);
+                }
             }
             else
             {
@@ -66,6 +75,21 @@ public class BossScript : MonoBehaviour
             Vector2.right
         };
 
+        if (currentHealth <= 5)
+        {
+            directions = new Vector2[]
+            {
+                Vector2.up,
+                Vector2.down,
+                Vector2.left,
+                Vector2.right,
+                new Vector2(1, 1).normalized, // Diagonal directions
+                new Vector2(-1, 1).normalized,
+                new Vector2(1, -1).normalized,
+                new Vector2(-1, -1).normalized
+            };
+        }
+
         foreach (Vector2 direction in directions)
         {
             GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
@@ -77,7 +101,12 @@ public class BossScript : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        
+
+        if (hitSound != null)
+        {
+            audioSource.PlayOneShot(hitSound);
+        }
+
         if (currentHealth <= maxHealth / 2)
         {
             spriteRenderer.color = enragedColor;
@@ -87,6 +116,19 @@ public class BossScript : MonoBehaviour
         {
             Die();
         }
+        else
+        {
+            StartCoroutine(InvincibilityCoroutine());
+        }
+    }
+
+    IEnumerator InvincibilityCoroutine()
+    {
+        isInvincible = true;
+        spriteRenderer.color = hitColor;
+        yield return new WaitForSeconds(invincibilityDuration);
+        spriteRenderer.color = currentHealth <= maxHealth / 2 ? enragedColor : Color.white;
+        isInvincible = false;
     }
 
     void Die()
@@ -94,6 +136,13 @@ public class BossScript : MonoBehaviour
         animator.SetTrigger("Die");
         GetComponent<Collider2D>().enabled = false;
         this.enabled = false;
-        Destroy(gameObject, 1f);
+        float dieAnimationLength = 1f; // Get the length of the current animation
+        StartCoroutine(LoadLevelCompleteSceneAfterDelay(dieAnimationLength));
+    }
+
+    IEnumerator LoadLevelCompleteSceneAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SceneManager.LoadScene("LevelComplete"); // Replace with your level complete scene name
     }
 }

@@ -43,6 +43,10 @@ public class Main : MonoBehaviour
 
     public GameObject originalRedSlime;
     public GameObject originalGreenSlime;
+    public AudioClip coinsound;
+
+    public AudioClip hitsound;
+    private AudioSource audioSource;
     CoinCollector coinCollector; // Reference to the CoinCollector script
     public SpriteRenderer playerSpriteRenderer; // Reference to the player's SpriteRenderer
 
@@ -55,12 +59,13 @@ public class Main : MonoBehaviour
 
         // Store the original coin and enemy prefab
         rb = GetComponent<Rigidbody2D>();
+        audioSource = GetComponent<AudioSource>();
         originalCoin = coinPrefab;
         originalEnemy = enemyPrefab;
         wind = windSwordPrefab;
         fire = flameSwordPrefab;
         thunder = thunderSwordPrefab;
-         originalRedSlime = GameObject.FindGameObjectWithTag("RedSlime");
+        originalRedSlime = GameObject.FindGameObjectWithTag("RedSlime");
         originalGreenSlime = GameObject.FindGameObjectWithTag("GreenSlime");
         currentHealth = maxHealth;
         UpdateUI();
@@ -111,24 +116,32 @@ public class Main : MonoBehaviour
 
     void UpdateUI()
     {
-        coinText.text =   coins.ToString();
-        enemyText.text =  enemiesKilled.ToString();
-        healthBar.text =  currentHealth.ToString();
+        coinText.text = coins.ToString();
+        enemyText.text = enemiesKilled.ToString();
+        healthBar.text = currentHealth.ToString();
     }
 
     public void ApplyKnockback(Vector2 direction, float force)
     {
         rb.velocity = Vector2.zero; // Reset the player's velocity before applying the knockback
-    rb.AddForce(direction * force, ForceMode2D.Impulse);
+        rb.AddForce(direction * force, ForceMode2D.Impulse);
     }
     public void CollectCoin()
     {
+        if (coinsound != null)
+        {
+            audioSource.PlayOneShot(coinsound);
+        }
         coins++;
         UpdateUI();
     }
 
     public void EnemyKilled()
     {
+        if (hitsound != null)
+        {
+            audioSource.PlayOneShot(hitsound);
+        }
         enemiesKilled++;
         UpdateUI();
     }
@@ -222,7 +235,7 @@ public class Main : MonoBehaviour
         GameObject[] existingEnemies = GameObject.FindGameObjectsWithTag("Enemy");
         GameObject[] existingReds = GameObject.FindGameObjectsWithTag("RedSlime");
         GameObject[] existingGreens = GameObject.FindGameObjectsWithTag("GreenSlime");
-     
+
 
         // Destroy all existing coins and enemies except the original ones
         foreach (GameObject coin in existingCoins)
@@ -233,7 +246,7 @@ public class Main : MonoBehaviour
 
         foreach (GameObject enemy in existingEnemies)
         {
-            if (enemy != originalEnemy )
+            if (enemy != originalEnemy)
                 Destroy(enemy);
         }
         foreach (GameObject red in existingReds)
@@ -407,62 +420,62 @@ public class Main : MonoBehaviour
             roomCoinsCollected[roomBounds] = collected;
         }
     }
-   void PlaceSwordsRandomly()
-{
-    // Clear the swords list to avoid adding duplicate swords
-    swords.Clear();
-    
-    // Add the swords to the list
-    swords.Add(windSwordPrefab);
-    swords.Add(thunderSwordPrefab);
-    swords.Add(flameSwordPrefab);
-
-    // Remove existing swords from the scene
-    RemoveExistingSwords();
-
-    List<BoundsInt> availableRooms = new List<BoundsInt>(RoomFirstMapGenerator.listRoomOrigin);
-
-    // Loop through each sword
-    foreach (var sword in swords)
+    void PlaceSwordsRandomly()
     {
-        if (availableRooms.Count == 0) break;
+        // Clear the swords list to avoid adding duplicate swords
+        swords.Clear();
 
-        // Get a random room from the available rooms
-        int randomIndex = Random.Range(0, availableRooms.Count);
-        BoundsInt randomRoom = availableRooms[randomIndex];
+        // Add the swords to the list
+        swords.Add(windSwordPrefab);
+        swords.Add(thunderSwordPrefab);
+        swords.Add(flameSwordPrefab);
 
-        // Check if the random room is the boss room, if so, find another room
-        while (randomRoom.center == maxRoom)
+        // Remove existing swords from the scene
+        RemoveExistingSwords();
+
+        List<BoundsInt> availableRooms = new List<BoundsInt>(RoomFirstMapGenerator.listRoomOrigin);
+
+        // Loop through each sword
+        foreach (var sword in swords)
         {
-            randomIndex = Random.Range(0, availableRooms.Count);
-            randomRoom = availableRooms[randomIndex];
-        }
+            if (availableRooms.Count == 0) break;
 
-        // Remove the selected room from the available list
-        availableRooms.RemoveAt(randomIndex);
+            // Get a random room from the available rooms
+            int randomIndex = Random.Range(0, availableRooms.Count);
+            BoundsInt randomRoom = availableRooms[randomIndex];
 
-        // Get a random position within the room
-        Vector3 randomPosition = new Vector3(
-            Random.Range(randomRoom.xMin + (RoomFirstMapGenerator.offsetvar + 1), randomRoom.xMax - (RoomFirstMapGenerator.offsetvar + 1)),
-            Random.Range(randomRoom.yMin + (RoomFirstMapGenerator.offsetvar + 1), randomRoom.yMax - (RoomFirstMapGenerator.offsetvar + 1)),
-            0);
+            // Check if the random room is the boss room, if so, find another room
+            while (randomRoom.center == maxRoom)
+            {
+                randomIndex = Random.Range(0, availableRooms.Count);
+                randomRoom = availableRooms[randomIndex];
+            }
 
-        // Instantiate the sword at the random position
-        Instantiate(sword, randomPosition, Quaternion.identity);
-    }
-}
-void RemoveExistingSwords()
-{
-    GameObject[] existingWeapons = GameObject.FindGameObjectsWithTag("Weapon");
+            // Remove the selected room from the available list
+            availableRooms.RemoveAt(randomIndex);
 
-    foreach (GameObject sword in existingWeapons)
-    {
-        if (sword != wind && sword != fire && sword != thunder)
-        {
-            Destroy(sword);
+            // Get a random position within the room
+            Vector3 randomPosition = new Vector3(
+                Random.Range(randomRoom.xMin + (RoomFirstMapGenerator.offsetvar + 1), randomRoom.xMax - (RoomFirstMapGenerator.offsetvar + 1)),
+                Random.Range(randomRoom.yMin + (RoomFirstMapGenerator.offsetvar + 1), randomRoom.yMax - (RoomFirstMapGenerator.offsetvar + 1)),
+                0);
+
+            // Instantiate the sword at the random position
+            Instantiate(sword, randomPosition, Quaternion.identity);
         }
     }
+    void RemoveExistingSwords()
+    {
+        GameObject[] existingWeapons = GameObject.FindGameObjectsWithTag("Weapon");
+
+        foreach (GameObject sword in existingWeapons)
+        {
+            if (sword != wind && sword != fire && sword != thunder)
+            {
+                Destroy(sword);
+            }
+        }
 
 
-}
+    }
 }
