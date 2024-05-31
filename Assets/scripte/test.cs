@@ -2,11 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class test : MonoBehaviour
+public class test : MonoBehaviour 
 {
     private bool debugVar = false;
 
@@ -34,6 +35,27 @@ public class test : MonoBehaviour
 
 
 
+
+
+    public Animator animator;
+    public SpriteRenderer spriteRenderer;
+
+    public bool IsRunning = false;
+    public bool lastInputWasUp = false; // Default to up
+    public bool lastInputWasDown = false;
+    bool isAttacking = false;
+
+    private SwordManager swordManager;
+    private Vector3 lastNonZeroInputDirection = Vector3.right; // Default to down
+
+
+
+
+
+
+    Vector3 lastPosition;
+
+
     private void startpFinding()
     {
         //pFinding = new PathFinding(roomFirstMapGenerator.getMapWidth, roomFirstMapGenerator.getMapHeight);
@@ -42,9 +64,16 @@ public class test : MonoBehaviour
             pFinding = new PathFinding(roomFirstMapGenerator.getMapWidth, roomFirstMapGenerator.getMapHeight);
         }
         var floor = roomFirstMapGenerator.getFloor();
+        lastPosition = transform.position;
 
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        HashSet<Vector2Int> enemiesArea = new HashSet<Vector2Int>();
+        GameObject[] blueEnemies = GameObject.FindGameObjectsWithTag("Enemy");
+        GameObject[] redEnemies = GameObject.FindGameObjectsWithTag("RedSlime");
+        GameObject[] greenEnemies = GameObject.FindGameObjectsWithTag("GreenSlime");
+
+        GameObject[] enemies = blueEnemies.Concat(redEnemies).Concat(greenEnemies).ToArray();
+
+
+
 
 
         foreach (GameObject enemy in enemies)
@@ -54,7 +83,7 @@ public class test : MonoBehaviour
             {
                 for (int dy = -2; dy <= 2; dy++)
                 {
-                    Vector2Int tilePos = new Vector2Int( (int)enemy.transform.position.x + dx, (int)enemy.transform.position.y + dy);
+                    Vector2Int tilePos = new Vector2Int((int)enemy.transform.position.x + dx, (int)enemy.transform.position.y + dy);
                     floor.Remove(tilePos);
                 }
             }
@@ -69,6 +98,7 @@ public class test : MonoBehaviour
             pFinding.createGrid(floor);
 
         }
+        pathfindingIsActive =true;
     }
 
 
@@ -82,7 +112,16 @@ public class test : MonoBehaviour
 
     private void Start()
     {
-        startpFinding();
+        //startpFinding();
+
+        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        swordManager = GetComponent<SwordManager>();
+
+        if (swordManager == null)
+        {
+            Debug.LogError("SwordManager not found on the player GameObject.");
+        }
 
     }
     void UpdatePathfinding()
@@ -120,7 +159,7 @@ public class test : MonoBehaviour
                     Debug.DrawRay(nodeToV3(path[i]), Vector3.up * 0.2f, Color.blue, 10f);
                 }
             }
-            
+
 
             gridPos = NodetoVector3(path);
             pathfindingIsActive = true;
@@ -132,9 +171,9 @@ public class test : MonoBehaviour
         {
             if (debugVar)
             {
-                 Debug.LogWarning(e.Message);
+                Debug.LogWarning(e.Message);
             }
-               
+
         }
     }
     IEnumerator WaitAndExecute(float seconds)
@@ -154,6 +193,10 @@ public class test : MonoBehaviour
 
     private void Update()
     {
+        if (pathfindingIsActive)
+        {
+           
+        }
 
 
 
@@ -249,7 +292,7 @@ public class test : MonoBehaviour
                 }
             }
 
-           
+
         }
         else if (Input.anyKey)
         {
@@ -277,6 +320,50 @@ public class test : MonoBehaviour
                 transform.position = Vector3.MoveTowards(transform.position, (Vector3)pos, speed * Time.deltaTime);
                 yield return null;
             }
+            // Calculate movement direction
+            Vector3 movementDirection = (transform.position - lastPosition).normalized;
+
+            // Check if the player is running
+            bool isRunning = movementDirection != Vector3.zero;
+            animator.SetBool("IsRunning", isRunning);
+
+            // Flip sprite if moving horizontally
+            if (movementDirection.x < 0)
+            {
+                spriteRenderer.flipX = true;
+                lastInputWasDown = false;
+                lastInputWasUp = false;
+                swordManager.SetOffset(swordManager.leftOffset);
+            }
+            else if (movementDirection.x > 0)
+            {
+                spriteRenderer.flipX = false;
+                lastInputWasDown = false;
+                lastInputWasUp = false;
+                swordManager.SetOffset(swordManager.rightOffset);
+            }
+            else if (movementDirection.y > 0)
+            {
+                lastInputWasUp = true;
+                lastInputWasDown = false;
+            }
+            else if (movementDirection.y < 0)
+            {
+                lastInputWasDown = true;
+                lastInputWasUp = false;
+            }
+
+            // Set Idle animations
+            animator.SetBool("IsIdle", !isRunning);
+            animator.SetBool("IsUp", lastInputWasUp && !isRunning);
+            animator.SetBool("IsDown", lastInputWasDown && !isRunning);
+
+            // Set RunningUp and RunningDown animations
+            animator.SetBool("IsRunningUp", movementDirection.y > 0 && isRunning);
+            animator.SetBool("IsRunningDown", movementDirection.y < 0 && isRunning);
+
+            // Update last position
+            lastPosition = transform.position;
             // Ensure exact positioning on the grid
             transform.position = (Vector3)pos;
             yield return null; // Optional: wait for a frame before moving to the next position

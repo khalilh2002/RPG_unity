@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Numerics;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Random = UnityEngine.Random ;
@@ -20,6 +21,10 @@ public class RoomFirstMapGenerator : simpleWalkMapGenerator
 
     private HashSet<Vector2Int> floor;
     public  HashSet<Vector2Int> getFloor() {
+        if (floor==null)
+        {
+            Debug.LogError("floor has problem");
+        }
         return new HashSet<Vector2Int>(floor);
     }
 

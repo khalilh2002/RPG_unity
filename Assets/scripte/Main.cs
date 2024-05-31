@@ -13,8 +13,8 @@ public class Main : MonoBehaviour
     [SerializeField] GameObject enemyPrefab;
     [SerializeField] GameObject greenslimePrefab;
     [SerializeField] GameObject redslimePrefab;
+    [SerializeField] BossScript bossobj;
 
-    BossScript bossobj;
 
     public TMP_Text coinText;
     public TMP_Text enemyText;
