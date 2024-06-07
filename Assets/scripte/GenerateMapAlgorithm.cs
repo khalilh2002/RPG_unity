@@ -7,36 +7,36 @@ public static class GenerateMapAlgorithm
     //Radom Walk algo
     //hash is like an array but doesnt allow duplicate
     //hash allows just vector2Dint
-    public static HashSet<Vector2Int> simpleRandomWalk(Vector2Int startPosition , int walkLenght){
+    //public static HashSet<Vector2Int> simpleRandomWalk(Vector2Int startPosition , int walkLenght){
 
-        HashSet<Vector2Int> path = new HashSet<Vector2Int>();
-        path.Add(startPosition);
-        var previousPosition = startPosition;
+    //    HashSet<Vector2Int> path = new HashSet<Vector2Int>();
+    //    path.Add(startPosition);
+    //    var previousPosition = startPosition;
 
-        for(int i=0 ; i< walkLenght ; i++){
+    //    for(int i=0 ; i< walkLenght ; i++){
 
-            var newPosition = previousPosition + Direction2D.GetRandomCardinalDirection();
-            path.Add(newPosition);
-            previousPosition = newPosition;
-        }
+    //        var newPosition = previousPosition + Direction2D.GetRandomCardinalDirection();
+    //        path.Add(newPosition);
+    //        previousPosition = newPosition;
+    //    }
 
-        return path; 
-    }
+    //    return path; 
+    //}
 
-    public static List<Vector2Int> RandomWalkCorridor (Vector2Int startPosition , int corridorLenght){
+    //public static List<Vector2Int> RandomWalkCorridor (Vector2Int startPosition , int corridorLenght){
         
-        List<Vector2Int> corridor = new List<Vector2Int>();
-        var direction = Direction2D.GetRandomCardinalDirection();
-        var curentPosition = startPosition;
-        corridor.Add(curentPosition);
+    //    List<Vector2Int> corridor = new List<Vector2Int>();
+    //    var direction = Direction2D.GetRandomCardinalDirection();
+    //    var curentPosition = startPosition;
+    //    corridor.Add(curentPosition);
 
-        for (int i = 0; i < corridorLenght; i++)
-        {
-            curentPosition = curentPosition + direction ;
-            corridor.Add(curentPosition);
-        }
-        return corridor;
-    }
+    //    for (int i = 0; i < corridorLenght; i++)
+    //    {
+    //        curentPosition = curentPosition + direction ;
+    //        corridor.Add(curentPosition);
+    //    }
+    //    return corridor;
+    //}
 
     /*---------------------- NEED OPTIIZATION--------------------------*/
     // Binary Space Partition
@@ -145,4 +145,4 @@ public static class Direction2D{
 }
 
 
-//hello test
+//hello ApplyPathFinding

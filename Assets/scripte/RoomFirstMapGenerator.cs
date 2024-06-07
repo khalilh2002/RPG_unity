@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Random = UnityEngine.Random ;
 
-public class RoomFirstMapGenerator : simpleWalkMapGenerator
+public class RoomFirstMapGenerator : AbstructMapGenerator
 {
     //var to send to the Main in wich he will be posioned
     public static BoundsInt FirstRoom ;
@@ -192,30 +192,13 @@ public class RoomFirstMapGenerator : simpleWalkMapGenerator
     {   HashSet<Vector2Int> floor = new HashSet<Vector2Int>();
         foreach (var room in roomlist)
         {
-            //Vector3Int min = room.min + new Vector3Int(offset, offset, 0);
-            //Vector3Int max = room.max - new Vector3Int(offset, offset, 0);
-            //BoundsInt adjustedBounds = new BoundsInt(min, max - min);
-            //try {
-            //    listRoomOrigin.Add(adjustedBounds);
-
-            //}
-            //catch (NullReferenceException e)
-            //{
-            //    Debug.Log("room adjustBounds :" + adjustedBounds);
-
-            //    Debug.Log("room adjustBounds max :" + min);
-            //    Debug.Log("room adjustBounds min :" + max);
-            //    Debug.LogError(e.Message);
-            //}
-            // Add the adjusted room bounds to the list
-
+           
 
             for (int column = offset; column < room.size.x - offset; column++)
             {
                 for (int row = offset; row < room.size.y - offset; row++){
                     Vector2Int position =  (Vector2Int)room.min + new Vector2Int(column , row );
-                    //BoundsInt adjustedBounds = new BoundsInt(new Vector3Int(position.x,position.y,0) , room.max- new Vector3Int(position.x, position.y, 0) );
-
+                    
                     floor.Add(position);
                 }
             }
@@ -380,57 +363,3 @@ public class PriorityQueue<T>
     }
 
 
-
-
-//public class Graph
-//{
-//    // Dictionary to store the adjacency list
-//    private Dictionary<BoundsInt, List<(BoundsInt, double)>> adjacencyList;
-
-//    // Constructor to initialize the graph
-//    public Graph()
-//    {
-//        adjacencyList = new Dictionary<BoundsInt, List<(BoundsInt, double)>>();
-//    }
-
-//    // Method to add an edge between two vertices with a given weight
-//    public void AddEdge(BoundsInt source, BoundsInt destination, double weight)
-//    {
-//        // Check if the source vertex already exists in the graph
-//        if (!adjacencyList.ContainsKey(source))
-//        {
-//            adjacencyList[source] = new List<(BoundsInt, double)>();
-//        }
-
-//        // Add the destination vertex and its weight to the adjacency list of the source vertex
-//        adjacencyList[source].Add((destination, weight));
-
-//        // Since it's an undirected graph, add an edge from the destination to the source as well
-//        if (!adjacencyList.ContainsKey(destination))
-//        {
-//            adjacencyList[destination] = new List<(BoundsInt, double)>();
-//        }
-
-//        // Add the source vertex and its weight to the adjacency list of the destination vertex
-//        adjacencyList[destination].Add((source, weight));
-//    }
-
-//    // Method to get the neighbors of a vertex
-//    public List<(BoundsInt, double)> GetNeighbors(BoundsInt vertex)
-//    {
-//        // Check if the vertex exists in the graph
-//        if (adjacencyList.ContainsKey(vertex))
-//        {
-//            return adjacencyList[vertex];
-//        }
-//        else
-//        {
-//            // If the vertex doesn't exist, return an empty list
-//            return new List<(BoundsInt, double)>();
-//        }
-//    }
-//}
-
-
-
-//hello test
