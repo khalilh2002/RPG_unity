@@ -22,9 +22,3 @@ for their valuable advice and support throughout the development of this project
 
 - Unity game engine (version X.X.X)
 - C# programming language
-
-### Installation
-
-1. Clone the repository
-   ```sh
-   git clone https://github.com/yourusername/your-repo-name.git
